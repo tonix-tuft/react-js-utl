@@ -26,7 +26,7 @@
 import { useRef, useEffect } from "react";
 
 /**
- * Hook to use the previous value of a state or prop.
+ * Hook to use the previous value of a value.
  *
  * @param {*} value The new value.
  * @return {*} The previous value, or, initially, "undefined".
