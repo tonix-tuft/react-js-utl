@@ -23,7 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
+import { useEffect } from "react";
+
+/**
+ * Hook to execute a callback on mount.
+ *
+ * @param {Function} fn The callback to execute.
+ * @return {undefined}
+ */
+export default function useMountEffect(fn) {
+  useEffect(fn, []);
+}

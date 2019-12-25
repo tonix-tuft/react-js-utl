@@ -1,5 +1,5 @@
 *.js
 */**
+!hooks/**
+!utils/**
 !example/**
-!src/**
-src/**/private

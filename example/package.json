@@ -7,7 +7,7 @@
   "dependencies": {
     "js-utl": "^1.2.0",
     "prop-types": "^15.6.2",
-    "react": "^16.4.1",
+    "react": "file:../node_modules/react",
     "react-dom": "^16.4.1",
     "react-scripts": "^3.2.0",
     "react-js-utl": "file:.."

@@ -23,7 +23,22 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
+import { useRef, useEffect } from "react";
+
+/**
+ * Hook to execute a callback each time a component updates
+ * (not when it mounts on the initial render).
+ *
+ * @param {Function} fn The callback to execute.
+ * @return {undefined}
+ */
+export default function useUpdateEffect(fn) {
+  const isInitialRenderRef = useRef(true);
+  useEffect(() => {
+    if (isInitialRenderRef.current) {
+      isInitialRenderRef.current = false;
+      return;
+    }
+    fn();
+  });
+}
