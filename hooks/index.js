@@ -27,3 +27,4 @@ export { default as usePrevious } from "./usePrevious";
 export { default as useUpdateEffect } from "./useUpdateEffect";
 export { default as useMountEffect } from "./useMountEffect";
 export { default as useUnmountEffect } from "./useUnmountEffect";
+export { default as usePOJOState } from "./usePOJOState";

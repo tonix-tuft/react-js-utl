@@ -32,7 +32,7 @@ import { useRef, useEffect } from "react";
  * @return {*} The previous value, or, initially, "undefined".
  */
 export default function usePrevious(value) {
-  const ref = useRef();
+  const ref = useRef(void 0);
   useEffect(() => {
     ref.current = value;
   });
