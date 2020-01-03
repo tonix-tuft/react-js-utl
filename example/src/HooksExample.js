@@ -3,7 +3,8 @@ import {
   useUpdateEffect,
   useMountEffect,
   useUnmountEffect,
-  usePOJOState
+  usePOJOState,
+  useForceUpdate
 } from "react-js-utl/hooks";
 
 export default function HooksExample() {
@@ -21,6 +22,8 @@ export default function HooksExample() {
   // eslint-disable-next-line no-console
   useUnmountEffect(() => console.log("componentWillUnmount"));
 
+  const forceUpdate = useForceUpdate();
+
   const [POJOState, setPOJOState] = usePOJOState({
     a: 123,
     b: 456
@@ -28,28 +31,37 @@ export default function HooksExample() {
 
   return (
     <div>
-      <p>Counter: {count}</p>
-      <button
-        onClick={() => {
-          setCount(count + 1);
-        }}
-      >
-        Click to update the counter
-      </button>
-      <button
-        onClick={() => {
-          setPOJOState(prevState => ({
-            b: prevState.b * 2
-          }));
-        }}
-      >
-        Click to update POJO state
-      </button>
       <div>
-        <p>POJO state:</p>
-        <pre>
-          <code>{JSON.stringify(POJOState, void 0, 4)}</code>
-        </pre>
+        <p>Counter: {count}</p>
+        <button
+          onClick={() => {
+            setCount(count + 1);
+          }}
+        >
+          Click to update the counter
+        </button>
+      </div>
+
+      <div>
+        <button
+          onClick={() => {
+            setPOJOState(prevState => ({
+              b: prevState.b * 2
+            }));
+          }}
+        >
+          Click to update POJO state
+        </button>
+        <div>
+          <p>POJO state:</p>
+          <pre>
+            <code>{JSON.stringify(POJOState, void 0, 4)}</code>
+          </pre>
+        </div>
+      </div>
+
+      <div>
+        <button onClick={forceUpdate}>Click to force update</button>
       </div>
     </div>
   );

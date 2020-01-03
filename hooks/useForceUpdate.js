@@ -23,9 +23,15 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
+import { useState, useCallback } from "react";
+
+/**
+ * Hook exposing an imperative callback which, if called, forces a component to update.
+ *
+ * @return {Function} A callback to call to force a component to update.
+ */
+export default function useForceUpdate() {
+  const [, setState] = useState();
+  const forceUpdate = useCallback(() => setState({}), []);
+  return forceUpdate;
+}
