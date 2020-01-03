@@ -33,11 +33,15 @@ import { trim, isArray } from "js-utl";
  * Returns a class name string.
  *
  * @param {string} componentClassName Default class name of a component.
- * @param {string} className Additional, optional string of class names.
+ * @param {...*} classNames Additional, optional list of strings of class names or falsy values to ignore.
  * @return {string} The class name string.
  */
-export function classNames(componentClassName, className) {
-  return trim(`${componentClassName} ${className || ""}`);
+export function classNames(componentClassName, ...classNames) {
+  return classNames.reduce(
+    (componentClassName, className) =>
+      trim(`${componentClassName} ${className || ""}`),
+    componentClassName
+  );
 }
 
 /**
