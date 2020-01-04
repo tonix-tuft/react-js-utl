@@ -16,7 +16,7 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module"
   },
-  plugins: ["react"],
+  plugins: ["react", "react-hooks"],
   rules: {
     "jsx-quotes": "off",
     "no-void": 0,
@@ -26,7 +26,10 @@ module.exports = {
     "no-unused-vars": ["error", { ignoreRestSiblings: true }],
     "no-console": "error",
     "standard/computed-property-even-spacing": "off",
-    "react/prop-types": 0
+    "react/prop-types": 0,
+    "react/jsx-uses-react": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
   },
   overrides: []
 };

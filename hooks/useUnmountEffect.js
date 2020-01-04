@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Anton Bagdatyev (Tonix-Tuft)
+ * Copyright (c) 2020 Anton Bagdatyev (Tonix-Tuft)
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 /**
  * Hook to execute a callback on unmount.
@@ -32,5 +32,6 @@ import { useEffect } from "react";
  * @return {undefined}
  */
 export default function useUnmountEffect(fn) {
-  useEffect(() => fn, []);
+  const fnRef = useRef(fn);
+  useEffect(() => fnRef.current, []);
 }

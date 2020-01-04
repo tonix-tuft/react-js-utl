@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 Anton Bagdatyev (Tonix-Tuft)
+ * Copyright (c) 2020 Anton Bagdatyev (Tonix-Tuft)
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -29,3 +29,5 @@ export { default as useMountEffect } from "./useMountEffect";
 export { default as useUnmountEffect } from "./useUnmountEffect";
 export { default as usePOJOState } from "./usePOJOState";
 export { default as useForceUpdate } from "./useForceUpdate";
+export { default as useHOFCallback } from "./useHOFCallback";
+export { default as useFactory } from "./useFactory";

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   useUpdateEffect,
   useMountEffect,
   useUnmountEffect,
   usePOJOState,
-  useForceUpdate
+  useForceUpdate,
+  useHOFCallback,
+  useFactory
 } from "react-js-utl/hooks";
 
 export default function HooksExample() {
@@ -28,6 +30,25 @@ export default function HooksExample() {
     a: 123,
     b: 456
   });
+
+  const HOFCallback = useHOFCallback(key => key * count * 2, [count]);
+  const callback = HOFCallback(3);
+  const callbackRef = useRef(callback);
+  // eslint-disable-next-line no-console
+  console.log(
+    callback(),
+    callback,
+    callbackRef.current,
+    callback === callbackRef.current
+      ? "callback === callbackRef.current"
+      : "callback !== callbackRef.current"
+  );
+  callbackRef.current = callback;
+
+  const factoryValue = useFactory(
+    () => [[() => false, 123], [true, 456], [() => false, 789], "default"],
+    []
+  );
 
   return (
     <div>
@@ -63,6 +84,8 @@ export default function HooksExample() {
       <div>
         <button onClick={forceUpdate}>Click to force update</button>
       </div>
+
+      <div>Factory value: {JSON.stringify(factoryValue)}</div>
     </div>
   );
 }
