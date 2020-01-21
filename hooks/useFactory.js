@@ -34,14 +34,14 @@ import { isArray } from "js-utl";
  *
  *                                - testCondition: A boolean value or a function returning a boolean value
  *                                                 which, if "true", instructs this hook to return the "factory" factory
- *                                                 bound with this "testCondition".
+ *                                                 bound to this "testCondition".
  *                                                 Note that the first "factory" for which "testCondition" is truthy
  *                                                 will be returned and further tuples will be ignored;
  *
  *                                - factory: Anything. The value to return if "testCondition" is a truthy value
  *                                           or a function returning a truthy value.
  *
- *                            The last element of the returned tuples MAY not be an tuple array with two elements,
+ *                            The last element of the returned tuples MAY not be a tuple array with two elements,
  *                            and in such case it will be treated as the default factory value to return if none
  *                            of the test conditions of the previous factories are satisfied.
  *                            If the last tuple is not a default value and none of the test conditions of the previous
