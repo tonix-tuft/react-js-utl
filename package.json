@@ -29,7 +29,8 @@
     "start": "rollup -c -w",
     "prepare": "npm run build",
     "predeploy": "cd example && npm install && npm run build",
-    "deploy": "gh-pages -d example/build"
+    "deploy": "gh-pages -d example/build",
+    "publish-minor": "npm run prepare && npm version minor && npm publish && git push && git push --tags"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
