@@ -28,5 +28,6 @@ export {
   mergeClassNameProp,
   reactComponentName,
   getDisplayName,
-  reactChildrenMap
+  reactChildrenMap,
+  refCallback
 } from "./utils";

@@ -104,3 +104,15 @@ export const reactChildrenMap = (children, fn) => {
   }
   return children.map(fn);
 };
+
+/**
+ * Generates a new ref callback.
+ *
+ * @param {Object} ref A ref object.
+ * @param {*} ref.current The mutable value of the ref.
+ * @param {string} prop A property to pick from the value passed to the ref callback.
+ * @return {Function} The new ref callback.
+ */
+export const refCallback = (ref, prop = void 0) => {
+  return value => (ref.current = prop ? (value ? value[prop] : null) : value);
+};
