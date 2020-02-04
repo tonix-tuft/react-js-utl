@@ -23,12 +23,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useHOFCallback } from "./useHOFCallback";
-export { default as useFactory } from "./useFactory";
-export { default as useExtend } from "./useExtend";
+import { useMemo } from "react";
+import { extend } from "js-utl";
+
+/**
+ * Hook to extend an object with an array of source objects.
+ *
+ * @param {Object|Function} destination Destination object or a function returning a destination object.
+ * @param {Object[]} deps Array of objects which defines the dependecies of the hook as well the source objects
+ *                        to use to extend the destination object.
+ * @return {Object} The extended destination object.
+ */
+export default function useExtend(destination, deps) {
+  const obj = useMemo(
+    destination === "function" ? destination : () => destination,
+    deps
+  );
+
+  const extendFn = () => extend(obj, ...deps);
+  const finalObj = useMemo(extendFn, deps);
+  return finalObj;
+}

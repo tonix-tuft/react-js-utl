@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import {
   useUpdateEffect,
   useMountEffect,
@@ -6,7 +6,8 @@ import {
   usePOJOState,
   useForceUpdate,
   useHOFCallback,
-  useFactory
+  useFactory,
+  useExtend
 } from "react-js-utl/hooks";
 
 export default function HooksExample() {
@@ -48,6 +49,26 @@ export default function HooksExample() {
   const factoryValue = useFactory(
     () => [[() => false, 123], [true, 456], [() => false, 789], "default"],
     []
+  );
+
+  const memoObj1 = useMemo(() => ({ a: 999, e: 111 }), []);
+  const memoObj2 = useMemo(() => ({ c: { d: 555, f: "A string" } }), []);
+  const destinationObj = { a: 123, b: 456, c: { d: 789 } };
+  const obj = useExtend(destinationObj, [memoObj1, memoObj2]);
+  obj.a = "A value";
+  obj.c.f = "Another string";
+  // eslint-disable-next-line no-console
+  console.log(
+    "useExtend - destinationObj === obj ?",
+    destinationObj === obj,
+    "\ndestinationObj = ",
+    destinationObj,
+    "\nmemoObj1 = ",
+    memoObj1,
+    "\nmemoObj2 = ",
+    memoObj2,
+    "\nobj = ",
+    obj
   );
 
   return (
