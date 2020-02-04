@@ -24,14 +24,17 @@
  */
 
 import { useMemo } from "react";
-import { extend } from "js-utl";
+import { extend, isObject } from "js-utl";
 
 /**
  * Hook to extend an object with an array of source objects.
  *
  * @param {Object|Function} destination Destination object or a function returning a destination object.
- * @param {Object[]} deps Array of objects which defines the dependecies of the hook as well the source objects
- *                        to use to extend the destination object.
+ * @param {Array} deps An array which defines the dependecies of the hook as well the source objects
+ *                     to use to extend the destination object.
+ *                     If the nth element of this array is an object, it will always be used as a source object
+ *                     when extending the destination object "destination", as well as used as a dep.
+ *                     If the nth element of this array is not an object, it will only be used as a dep.
  * @return {Object} The extended destination object.
  */
 export default function useExtend(destination, deps) {
@@ -40,7 +43,7 @@ export default function useExtend(destination, deps) {
     deps
   );
 
-  const extendFn = () => extend(obj, ...deps);
+  const extendFn = () => extend(obj, ...deps.filter(isObject));
   const finalObj = useMemo(extendFn, deps);
   return finalObj;
 }

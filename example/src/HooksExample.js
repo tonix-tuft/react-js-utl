@@ -54,7 +54,12 @@ export default function HooksExample() {
   const memoObj1 = useMemo(() => ({ a: 999, e: 111 }), []);
   const memoObj2 = useMemo(() => ({ c: { d: 555, f: "A string" } }), []);
   const destinationObj = { a: 123, b: 456, c: { d: 789 } };
-  const obj = useExtend(destinationObj, [memoObj1, memoObj2]);
+  const obj = useExtend(destinationObj, [
+    memoObj1,
+    1,
+    memoObj2,
+    "Ignore as it is not a source"
+  ]);
   obj.a = "A value";
   obj.c.f = "Another string";
   // eslint-disable-next-line no-console
