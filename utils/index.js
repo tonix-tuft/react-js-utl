@@ -29,5 +29,6 @@ export {
   reactComponentName,
   getDisplayName,
   reactChildrenMap,
+  reactChildrenKeyChildTupleMap,
   refCallback
 } from "./utils";

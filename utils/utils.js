@@ -106,6 +106,32 @@ export const reactChildrenMap = (children, fn) => {
 };
 
 /**
+ * Map react children like "React.Children.map()", but without changing children keys
+ * as well as accepting "[key child]" tuple as a child and passing the current key and child
+ * parameter to the provided callback function.
+ *
+ * @param {*} children React children (usually the value of "props.children").
+ * @param {Function} fn Function to call which will receive two parameters:
+ *
+ *                          - key: The current key;
+ *                          - child: The current child;
+ *
+ * @return {Array} An array of mapped children.
+ */
+export const reactChildrenKeyChildTupleMap = (children, fn) => {
+  return reactChildrenMap(children, current => {
+    let key, child;
+    if (isArray(current)) {
+      [key, child] = current;
+    } else {
+      child = current;
+      key = child.key;
+    }
+    return fn(key, child);
+  });
+};
+
+/**
  * Generates a new ref callback.
  *
  * @param {Object} ref A ref object.
