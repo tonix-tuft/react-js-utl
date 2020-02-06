@@ -39,7 +39,7 @@ import { extend, isObject } from "js-utl";
  */
 export default function useExtend(destination, deps) {
   const obj = useMemo(
-    destination === "function" ? destination : () => destination,
+    typeof destination === "function" ? destination : () => destination,
     deps
   );
 
