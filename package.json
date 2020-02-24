@@ -2,7 +2,7 @@
   "name": "react-js-utl",
   "version": "1.14.0",
   "description": "React JS utility functions and hooks.",
-  "author": "tonix-tuft",
+  "author": "Anton Bagdatyev (Tonix)",
   "license": "MIT",
   "repository": "tonix-tuft/react-js-utl",
   "main": "dist/index.js",
@@ -30,8 +30,10 @@
     "prepare": "npm run build",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
-    "publish-patch": "npm run prepare && npm version patch && npm publish && git push && git push --tags",
-    "publish-minor": "npm run prepare && npm version minor && npm publish && git push && git push --tags"
+    "publish-git": "npm publish && git push && git push --tags",
+    "publish-patch": "npm run prepare && npm version patch && npm run publish-git",
+    "publish-minor": "npm run prepare && npm version minor && npm run publish-git",
+    "publish-major": "npm run prepare && npm version major && npm run publish-git"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
@@ -71,24 +73,24 @@
     "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.18.3",
-    "eslint-plugin-react-hooks": "^2.3.0",
+    "eslint-plugin-react-hooks": "^2.4.0",
     "eslint-plugin-standard": "^4.0.1",
     "gh-pages": "^2.2.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-scripts": "^3.3.1",
-    "rollup": "^1.31.0",
+    "react-scripts": "^3.4.0",
+    "rollup": "^1.31.1",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-peer-deps-external": "^2.2.2",
-    "rollup-plugin-postcss": "^2.0.6",
+    "rollup-plugin-postcss": "^2.1.1",
     "rollup-plugin-url": "^3.0.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
   },
   "dependencies": {
     "immutable-linked-ordered-map": "^0.22.0",
-    "js-utl": "^3.0.0"
+    "js-utl": "^3.1.0"
   },
   "files": [
     "dist",
