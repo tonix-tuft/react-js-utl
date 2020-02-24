@@ -29,7 +29,7 @@ import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
 /**
  * Hook genereting a callback to easily loop through a data structure.
  *
- * @param {*} dataStructure A data structure.
+ * @param {Array|ImmutableLinkedOrderedMap} dataStructure A data structure.
  * @return {(fn: (value: *) => *)) => Array} A function which receives a callback to loop through
  *                                           the values of the data structure returning an array
  *                                           with the mapped values.
