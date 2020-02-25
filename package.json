@@ -38,7 +38,8 @@
   "peerDependencies": {
     "prop-types": "^15.5.4",
     "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
+    "react-dom": "^15.0.0 || ^16.0.0",
+    "immutable-linked-ordered-map": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
@@ -89,7 +90,7 @@
     "typescript": "^3.8.2"
   },
   "dependencies": {
-    "immutable-linked-ordered-map": "^0.22.0",
+    "immutable-linked-ordered-map": "^1.0.0",
     "js-utl": "^3.1.0"
   },
   "files": [
