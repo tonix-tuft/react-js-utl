@@ -85,7 +85,7 @@ export function getDisplayName(Component) {
   return (
     Component.displayName ||
     Component.name ||
-    (Component.type && Component.type.name) ||
+    (typeof Component === "object" && getDisplayName(Component.type)) ||
     "Component"
   );
 }
@@ -141,9 +141,8 @@ export const reactChildrenKeyChildTupleMap = (children, fn) => {
  * @param {string} prop A property to pick from the value passed to the ref callback.
  * @return {Function} The new ref callback.
  */
-export const refCallback = (ref, prop = void 0) => {
-  return value => (ref.current = prop ? (value ? value[prop] : null) : value);
-};
+export const refCallback = (ref, prop = void 0) => value =>
+  (ref.current = prop ? (value ? value[prop] : null) : value);
 
 /**
  * Tests if the given value is a function with a valid React component name.
@@ -156,6 +155,15 @@ export const isFnWithComponentName = fn =>
   typeof fn === "function" && fn.name[0] === fn.name[0].toUpperCase();
 
 /**
+ * Tests if a value is a React builtin HOC (e.g. a component returned by "React.memo()").
+ *
+ * @param {*} Component The value.
+ * @return {boolean} True if the given value is a React HOC.
+ */
+export const isReactHOC = Component =>
+  typeof Component === "object" && isReactComponent(Component.type);
+
+/**
  * Tests if the given value is a valid React functional component.
  *
  * @param {*} Component The value.
@@ -163,8 +171,9 @@ export const isFnWithComponentName = fn =>
  */
 export function isFunctionalComponent(Component) {
   return (
-    isFnWithComponentName(Component) &&
-    !(Component.prototype && Component.prototype.isReactComponent)
+    (isFnWithComponentName(Component) &&
+      !(Component.prototype && Component.prototype.isReactComponent)) ||
+    (isReactHOC(Component) && isFunctionalComponent(Component.type))
   );
 }
 
@@ -175,10 +184,13 @@ export function isFunctionalComponent(Component) {
  * @return {boolean} True if the value is a React class component, false otherwise.
  */
 export function isClassComponent(Component) {
-  return !!(
-    isFnWithComponentName(Component) &&
-    Component.prototype &&
-    Component.prototype.isReactComponent
+  return (
+    !!(
+      isFnWithComponentName(Component) &&
+      Component.prototype &&
+      Component.prototype.isReactComponent
+    ) ||
+    (isReactHOC(Component) && isClassComponent(Component.type))
   );
 }
 
@@ -189,5 +201,9 @@ export function isClassComponent(Component) {
  * @return {boolean} True if the given value is a valid React component, false otherwise.
  */
 export function isReactComponent(Component) {
-  return isFunctionalComponent(Component) || isClassComponent(Component);
+  return (
+    isFunctionalComponent(Component) ||
+    isClassComponent(Component) ||
+    isReactHOC(Component)
+  );
 }

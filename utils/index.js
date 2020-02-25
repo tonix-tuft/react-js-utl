@@ -34,5 +34,6 @@ export {
   isFnWithComponentName,
   isFunctionalComponent,
   isClassComponent,
-  isReactComponent
+  isReactComponent,
+  isReactHOC
 } from "./utils";
