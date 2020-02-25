@@ -47,6 +47,8 @@ export function classNames(componentClassName, ...classNames) {
 /**
  * Merges a component's class name.
  *
+ * @deprecated since version 1.17.0 (will be removed in version 2.0.0, use "classNames()" instead)
+ *
  * @param {string} componentClassName Component's class name.
  * @param {Object} props Properties.
  * @return {Object} The merged properties.
@@ -142,3 +144,50 @@ export const reactChildrenKeyChildTupleMap = (children, fn) => {
 export const refCallback = (ref, prop = void 0) => {
   return value => (ref.current = prop ? (value ? value[prop] : null) : value);
 };
+
+/**
+ * Tests if the given value is a function with a valid React component name.
+ *
+ * @param {*} fn A value.
+ * @return {boolean} True if the given value is a function with a valid React component name,
+ *                   false otherwise.
+ */
+export const isFnWithComponentName = fn =>
+  typeof fn === "function" && fn.name[0] === fn.name[0].toUpperCase();
+
+/**
+ * Tests if the given value is a valid React functional component.
+ *
+ * @param {*} Component The value.
+ * @return {boolean} True if the value is a React functional component, false otherwise.
+ */
+export function isFunctionalComponent(Component) {
+  return (
+    isFnWithComponentName(Component) &&
+    !(Component.prototype && Component.prototype.isReactComponent)
+  );
+}
+
+/**
+ * Tests if the given value is a valid React class component.
+ *
+ * @param {*} Component The value.
+ * @return {boolean} True if the value is a React class component, false otherwise.
+ */
+export function isClassComponent(Component) {
+  return !!(
+    isFnWithComponentName(Component) &&
+    Component.prototype &&
+    Component.prototype.isReactComponent
+  );
+}
+
+/**
+ * Tests if the given value is a valid React component.
+ *
+ * @param {*} value A value.
+ * @return {boolean} True if the given value is a valid React component, false otherwise.
+ */
+export function isReactComponent(Component) {
+  return isFunctionalComponent(Component) || isClassComponent(Component);
+}

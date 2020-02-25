@@ -30,5 +30,9 @@ export {
   getDisplayName,
   reactChildrenMap,
   reactChildrenKeyChildTupleMap,
-  refCallback
+  refCallback,
+  isFnWithComponentName,
+  isFunctionalComponent,
+  isClassComponent,
+  isReactComponent
 } from "./utils";
