@@ -23,14 +23,14 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useHOFCallback } from "./useHOFCallback";
-export { default as useFactory } from "./useFactory";
-export { default as useExtend } from "./useExtend";
-export { default as useLoopCallback } from "./useLoopCallback";
-export { default as useWindowRef } from "./useWindowRef";
+import { useRef } from "react";
+
+/**
+ * Hook to get a ref to the global "window" object.
+ *
+ * @return {Object} A ref to the global "window" object, available through the "current" property.
+ */
+export default function useWindowRef() {
+  const ref = useRef(window);
+  return ref;
+}
