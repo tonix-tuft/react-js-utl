@@ -34,3 +34,4 @@ export { default as useFactory } from "./useFactory";
 export { default as useExtend } from "./useExtend";
 export { default as useLoopCallback } from "./useLoopCallback";
 export { default as useWindowRef } from "./useWindowRef";
+export { default as useElementSize } from "./useElementSize";
