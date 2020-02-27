@@ -45,8 +45,8 @@ import { partialShallowEqual } from "js-utl";
  */
 export default function usePOJOState(initialState) {
   const [state, setState] = useState(initialState);
-  const setPOJOState = useMemo(() => {
-    return nextState =>
+  const setPOJOState = useMemo(
+    () => nextState =>
       setState(prevState => {
         const newState =
           typeof nextState === "function" ? nextState(prevState) : nextState;
@@ -57,7 +57,8 @@ export default function usePOJOState(initialState) {
             ? prevState
             : { ...prevState, ...newState };
         }
-      });
-  }, []);
+      }),
+    []
+  );
   return [state, setPOJOState];
 }
