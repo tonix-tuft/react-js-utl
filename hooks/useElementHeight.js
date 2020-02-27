@@ -23,17 +23,19 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useHOFCallback } from "./useHOFCallback";
-export { default as useFactory } from "./useFactory";
-export { default as useExtend } from "./useExtend";
-export { default as useLoopCallback } from "./useLoopCallback";
-export { default as useWindowRef } from "./useWindowRef";
-export { default as useElementSize } from "./useElementSize";
-export { default as useElementHeight } from "./useElementHeight";
-export { default as useElementWidth } from "./useElementWidth";
+import useElementSize from "./useElementSize";
+import { useMemo } from "react";
+
+/**
+ * Hook like {@link useElementSize()}, but optimized for height only.
+ *
+ * @param {string|Element} element A selector of a DOM element or a DOM element.
+ * @return {Array|Object} The return value of this hook can be destructured as an array as well as an object
+ *                        and its the same as the return value of the "useElementSize()" hook,
+ *                        the only difference being that the dimension object will only have the "height" property.
+ *
+ */
+export default function useElementHeight(element) {
+  const dimensionProps = useMemo(() => ["height"], []);
+  return useElementSize(element, dimensionProps);
+}

@@ -26,6 +26,7 @@
 import { useLayoutEffect, useEffect, useCallback } from "react";
 import useWindowRef from "./useWindowRef";
 import usePOJOState from "./usePOJOState";
+import { pick } from "js-utl";
 
 /**
  * @type {Object}
@@ -36,9 +37,16 @@ const initialDimensions = {
 };
 
 /**
+ * @type {string[]}
+ */
+const defaultDimensionProps = ["width", "height"];
+
+/**
  * Hook to get the dimensions of a DOM element.
  *
  * @param {string|Element} element A selector of a DOM element or a DOM element.
+ * @param {string[]} dimensionProps Array of dimension props to track.
+ *                                  Defaults to ['width', 'height'], i.e. track both width and height.
  * @return {Array|Object} The return value of this hook can be destructured as an array as well as an object.
  *
  *                        When destructuring it as an array, the array will have the dimensions object
@@ -51,8 +59,13 @@ const initialDimensions = {
  *
  *                        Initially, on first render, both "width" and "height" will be "undefined".
  */
-export default function useElementSize(element) {
-  const [dimensions, setDimensions] = usePOJOState(initialDimensions);
+export default function useElementSize(
+  element,
+  dimensionProps = defaultDimensionProps
+) {
+  const [dimensions, setDimensions] = usePOJOState(() =>
+    pick(...dimensionProps)(initialDimensions)
+  );
 
   const windowRef = useWindowRef();
 
@@ -60,12 +73,13 @@ export default function useElementSize(element) {
     const finalElement =
       typeof element === "string" ? document.querySelector(element) : element;
     if (finalElement) {
-      const { width, height } = finalElement.getBoundingClientRect();
-      setDimensions({ width, height });
+      const boundingClientRect = finalElement.getBoundingClientRect();
+      const dimensions = pick(...dimensionProps)(boundingClientRect);
+      setDimensions(dimensions);
     } else {
       setDimensions(initialDimensions);
     }
-  }, [element, setDimensions]);
+  }, [element, setDimensions, dimensionProps]);
 
   useEffect(() => {
     const window =
