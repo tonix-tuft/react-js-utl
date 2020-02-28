@@ -81,16 +81,15 @@ export default function useElementSize(
     }
   }, [element, setDimensions, dimensionProps]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const window =
       windowRef.current &&
       windowRef.current.addEventListener("resize", forceSetDimensions);
+    forceSetDimensions();
     return () => {
       window && window.removeEventListener("resize", forceSetDimensions);
     };
   }, [windowRef, forceSetDimensions]);
-
-  useLayoutEffect(forceSetDimensions, [element]);
 
   const ret = [dimensions, forceSetDimensions];
   for (const prop in dimensions) {
