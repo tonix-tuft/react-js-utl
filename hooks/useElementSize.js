@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { useLayoutEffect, useEffect, useCallback } from "react";
+import { useLayoutEffect, useCallback } from "react";
 import useWindowRef from "./useWindowRef";
 import usePOJOState from "./usePOJOState";
 import { pick } from "js-utl";
