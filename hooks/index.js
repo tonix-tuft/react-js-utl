@@ -37,3 +37,4 @@ export { default as useWindowRef } from "./useWindowRef";
 export { default as useElementSize } from "./useElementSize";
 export { default as useElementHeight } from "./useElementHeight";
 export { default as useElementWidth } from "./useElementWidth";
+export { default as useArray } from "./useArray";
