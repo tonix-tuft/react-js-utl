@@ -27,23 +27,22 @@ import useFactory from "./useFactory";
 import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
 
 /**
- * Hook generating a callback to easily loop through a data structure.
+ * Hook returning an array for a given a data structure.
  *
  * @param {Array|ImmutableLinkedOrderedMap} dataStructure A data structure.
- * @return {(fn: (value: *) => *) => Array} A function which receives a callback to loop through
- *                                          the values of the data structure returning an array
- *                                          with the mapped values.
+ * @return {Array} An array containing the values of the data structure.
+ *                 If an array is given as the data structure, the same array will be returned by this hook.
  */
 export default function useLoopCallback(dataStructure) {
-  const loopCallback = useFactory(
+  const arrayFactoryFn = useFactory(
     () => [
       [
         dataStructure instanceof ImmutableLinkedOrderedMap,
-        fn => dataStructure.map(fn)
+        () => dataStructure.values()
       ],
-      fn => dataStructure.map(fn)
+      () => dataStructure
     ],
     [dataStructure]
   );
-  return loopCallback;
+  return arrayFactoryFn();
 }
