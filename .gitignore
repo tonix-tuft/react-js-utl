@@ -22,3 +22,7 @@ yarn-debug.log*
 yarn-error.log*
 
 **/private_local_*
+hooks/
+!src/hooks/
+utils/
+!src/utils/

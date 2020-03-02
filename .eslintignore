@@ -1,5 +1,4 @@
 *.js
 */**
-!hooks/**
-!utils/**
+!src/
 !example/**

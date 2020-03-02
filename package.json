@@ -33,7 +33,8 @@
     "publish-git": "npm publish && git push && git push --tags",
     "publish-patch": "npm run prepare && npm version patch && npm run publish-git",
     "publish-minor": "npm run prepare && npm version minor && npm run publish-git",
-    "publish-major": "npm run prepare && npm version major && npm run publish-git"
+    "publish-major": "npm run prepare && npm version major && npm run publish-git",
+    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm ./index.js"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
@@ -42,6 +43,7 @@
     "immutable-linked-ordered-map": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.6",
     "@babel/plugin-external-helpers": "^7.8.3",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
@@ -55,6 +57,7 @@
     "@babel/plugin-proposal-logical-assignment-operators": "^7.8.3",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.8.3",
     "@babel/plugin-proposal-numeric-separator": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
     "@babel/plugin-proposal-optional-chaining": "^7.8.3",
     "@babel/plugin-proposal-pipeline-operator": "^7.8.3",
     "@babel/plugin-proposal-throw-expressions": "^7.8.3",
@@ -65,6 +68,7 @@
     "@babel/preset-react": "^7.8.3",
     "@svgr/rollup": "^4.3.3",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
     "eslint-config-react-app": "^5.2.0",
