@@ -43,7 +43,7 @@ export default function useLoopCallback(dataStructure) {
       ],
       fn => dataStructure.map(fn)
     ],
-    dataStructure
+    [dataStructure]
   );
   return loopCallback;
 }
