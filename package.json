@@ -30,11 +30,12 @@
     "prepare": "npm run build",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
+    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm -f ./index.js",
+    "watch-build-module": "npm run build-module && ./node_modules/.bin/onchange './src/**' -- npm run build-module",
     "publish-git": "npm publish && git push && git push --tags",
     "publish-patch": "npm run prepare && npm version patch && npm run publish-git",
     "publish-minor": "npm run prepare && npm version minor && npm run publish-git",
-    "publish-major": "npm run prepare && npm version major && npm run publish-git",
-    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm ./index.js"
+    "publish-major": "npm run prepare && npm version major && npm run publish-git"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
@@ -67,7 +68,6 @@
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-react": "^7.8.3",
     "@svgr/rollup": "^4.3.3",
-    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
@@ -81,6 +81,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
     "gh-pages": "^2.2.0",
+    "onchange": "^6.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-scripts": "^3.4.0",

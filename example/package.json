@@ -9,8 +9,8 @@
     "prop-types": "^15.6.2",
     "react": "file:../node_modules/react",
     "react-dom": "^16.4.1",
-    "react-scripts": "^3.2.0",
-    "react-js-utl": "file:.."
+    "react-js-utl": "file:..",
+    "react-scripts": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0",
@@ -33,7 +33,6 @@
     "@babel/plugin-syntax-import-meta": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-config-standard": "^11.0.0",
     "eslint-config-standard-react": "^6.0.0",
