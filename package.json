@@ -32,10 +32,11 @@
     "deploy": "gh-pages -d example/build",
     "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm -f ./index.js",
     "watch-build-module": "npm run build-module && ./node_modules/.bin/onchange './src/**' -- npm run build-module",
+    "build-all": "npm run prepare && npm run build-module",
     "publish-git": "npm publish && git push && git push --tags",
-    "publish-patch": "npm run prepare && npm version patch && npm run publish-git",
-    "publish-minor": "npm run prepare && npm version minor && npm run publish-git",
-    "publish-major": "npm run prepare && npm version major && npm run publish-git"
+    "publish-patch": "npm run build-all && npm version patch && npm run publish-git",
+    "publish-minor": "npm run build-all && npm version minor && npm run publish-git",
+    "publish-major": "npm run build-all && npm version major && npm run publish-git"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
