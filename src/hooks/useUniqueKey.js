@@ -23,19 +23,21 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useHOFCallback } from "./useHOFCallback";
-export { default as useFactory } from "./useFactory";
-export { default as useExtend } from "./useExtend";
-export { default as useLoopCallback } from "./useLoopCallback";
-export { default as useWindowRef } from "./useWindowRef";
-export { default as useElementSize } from "./useElementSize";
-export { default as useElementHeight } from "./useElementHeight";
-export { default as useElementWidth } from "./useElementWidth";
-export { default as useArray } from "./useArray";
-export { default as useUniqueKey } from "./useUniqueKey";
+import { useMemo } from "react";
+import { uniqueId } from "js-utl";
+
+/**
+ * @type {string}
+ */
+const uniqueKeyPrefix = "react-js-utl-ellViKYMFK-";
+
+/**
+ * Hook returning a unique key.
+ *
+ * @param {*} [dep] An optional dep which, if set and when changed, will force the regeneration of a new key.
+ * @return {string} A unique key.
+ */
+export default function useUniqueKey(dep = void 0) {
+  const key = useMemo(() => uniqueId(uniqueKeyPrefix), [dep]);
+  return key;
+}

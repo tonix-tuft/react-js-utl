@@ -68,6 +68,7 @@
     "@babel/preset-env": "^7.8.6",
     "@babel/preset-react": "^7.8.3",
     "@svgr/rollup": "^4.3.3",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "cross-env": "^6.0.3",
     "eslint": "^6.8.0",
@@ -81,6 +82,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "eslint-plugin-standard": "^4.0.1",
     "gh-pages": "^2.2.0",
+    "immutable-linked-ordered-map": "^1.0.0",
     "onchange": "^6.1.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
@@ -92,11 +94,10 @@
     "rollup-plugin-peer-deps-external": "^2.2.2",
     "rollup-plugin-postcss": "^2.1.1",
     "rollup-plugin-url": "^3.0.1",
-    "typescript": "^3.8.3",
-    "immutable-linked-ordered-map": "^1.0.0"
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "js-utl": "^3.8.0"
+    "js-utl": "^3.9.0"
   },
   "files": [
     "dist",
