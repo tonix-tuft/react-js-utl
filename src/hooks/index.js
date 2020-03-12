@@ -39,3 +39,4 @@ export { default as useElementHeight } from "./useElementHeight";
 export { default as useElementWidth } from "./useElementWidth";
 export { default as useArray } from "./useArray";
 export { default as useUniqueKey } from "./useUniqueKey";
+export { default as useDefaultValue } from "./useDefaultValue";

@@ -35,5 +35,6 @@ export {
   isFunctionalComponent,
   isClassComponent,
   isReactComponent,
-  isReactHOC
+  isReactHOC,
+  defaultVal
 } from "./utils";

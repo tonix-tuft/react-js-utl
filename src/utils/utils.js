@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { trim, isArray } from "js-utl";
+import { trim, isArray, isUndefined } from "js-utl";
 
 /**
  * React JS utility functions.
@@ -206,4 +206,25 @@ export function isReactComponent(Component) {
     isClassComponent(Component) ||
     isReactHOC(Component)
   );
+}
+
+/**
+ * Returns a default value.
+ *
+ * @param {*} [defaultValue] A default value.
+ * @param {*} [valueIfDefaultValueIsUndefined] A value to return if the given default value is "undefined".
+ * @return {*} A default value.
+ */
+export function defaultVal(
+  defaultValue = void 0,
+  valueIfDefaultValueIsUndefined = void 0
+) {
+  if (defaultValue) {
+    return defaultValue;
+  }
+  if (isUndefined(defaultValue)) {
+    return valueIfDefaultValueIsUndefined;
+  } else {
+    return !defaultValue ? void 0 : defaultValue;
+  }
 }
