@@ -91,25 +91,72 @@ export function getDisplayName(Component) {
 }
 
 /**
- * Map react children like "React.Children.map()", but without changing children keys.
+ * Returns an array of mappable children if the given children
+ * parameter is not falsy.
  *
- * @param {*} children React children (usually the value of "props.children").
- * @param {Function} fn Function to call which will receive each children and its corresponding index as argument.
- * @return {Array} An array of mapped children.
+ * @private
+ *
+ * @param {*} children The given children.
+ * @param {(children: Array) => Array} fn A callback to map children returning the mapped children
+ *                                        if the given "children" is not falsy.
  */
-export const reactChildrenMap = (children, fn) => {
+const childrenMap = (children, fn) => {
   if (!isArray(children)) {
     if (!children) {
       return children;
     }
     children = [children];
   }
-  return children.map(fn);
+  return fn(children);
 };
 
 /**
- * Map react children like "React.Children.map()", but without changing children keys
- * as well as accepting "[key child]" tuple as a child and passing the current key and child
+ * Map React children like "React.Children.map()", but without changing children keys.
+ *
+ * @param {*} children React children (usually the value of "props.children").
+ * @param {Function} fn Function to call which will receive each child and its corresponding index as argument.
+ * @return {Array} An array of mapped children.
+ */
+export const reactChildrenMap = (children, fn) =>
+  childrenMap(children, children => children.map(fn));
+
+/**
+ * Map React children like "reactChildrenMap", but flattening the given children before mapping.
+ *
+ * @param {*} children React children (usually the value of "props.children").
+ * @param {Function} fn Function to call which will receive each child and its corresponding index as argument.
+ * @param {number} [depth] The depth of the flattening. Defaults to 1.
+ * @return {Array} An array of mapped children.
+ */
+export const reactChildrenFlatMap = (children, fn, depth = 1) =>
+  childrenMap(children, children => children.flat(depth).map(fn));
+
+/**
+ * Returns a key/child tuple function.
+ *
+ * @private
+ *
+ * @param {Function} fn Function to call which will receive two parameters:
+ *
+ *                          - key: The current key;
+ *                          - child: The current child;
+ *
+ * @return {(current: *) => *} A function returning the mapped child.
+ */
+const childrenKeyChildTupleFn = fn => current => {
+  let key, child;
+  if (isArray(current)) {
+    [key, child] = current;
+  } else {
+    child = current;
+    key = child.key;
+  }
+  return fn(key, child);
+};
+
+/**
+ * Map React children like "React.Children.map()", but without changing children keys
+ * as well as accepting a "[key, child]" tuple as a child and passing the current key and child
  * parameter to the provided callback function.
  *
  * @param {*} children React children (usually the value of "props.children").
@@ -121,16 +168,22 @@ export const reactChildrenMap = (children, fn) => {
  * @return {Array} An array of mapped children.
  */
 export const reactChildrenKeyChildTupleMap = (children, fn) => {
-  return reactChildrenMap(children, current => {
-    let key, child;
-    if (isArray(current)) {
-      [key, child] = current;
-    } else {
-      child = current;
-      key = child.key;
-    }
-    return fn(key, child);
-  });
+  return reactChildrenMap(children, childrenKeyChildTupleFn(fn));
+};
+
+/**
+ * Map React children like "reactChildrenKeyChildTupleMap", but flattening the given children before mapping.
+ *
+ * @param {*} children React children (usually the value of "props.children").
+ * @param {Function} fn Function to call which will receive two parameters:
+ *
+ *                          - key: The current key;
+ *                          - child: The current child;
+ *
+ * @return {Array} An array of mapped children.
+ */
+export const reactChildrenKeyChildTupleFlatMap = (children, fn) => {
+  return reactChildrenFlatMap(children, childrenKeyChildTupleFn(fn));
 };
 
 /**
