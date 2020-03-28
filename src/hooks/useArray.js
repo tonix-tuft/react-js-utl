@@ -33,7 +33,7 @@ import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
  * @return {Array} An array containing the values of the data structure.
  *                 If an array is given as the data structure, the same array will be returned by this hook.
  */
-export default function useLoopCallback(dataStructure) {
+export default function useArray(dataStructure) {
   const arrayFactoryFn = useFactory(
     () => [
       [
