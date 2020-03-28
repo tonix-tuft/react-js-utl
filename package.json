@@ -30,7 +30,7 @@
     "prepare": "npm run build",
     "predeploy": "cd example && npm install && npm run build",
     "deploy": "gh-pages -d example/build",
-    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm -f ./index.js",
+    "build-module": "cross-env BABEL_ENV=module ./node_modules/.bin/babel ./src --out-dir ./. --source-maps --copy-files && rm -f ./index.js ./index.js.map",
     "watch-build-module": "npm run build-module && ./node_modules/.bin/onchange './src/**' -- npm run build-module",
     "build-all": "npm run prepare && npm run build-module",
     "publish-git": "npm publish && git push && git push --tags",
