@@ -7,7 +7,8 @@ import {
   useForceUpdate,
   useHOFCallback,
   useFactory,
-  useExtend
+  useExtend,
+  useShallowEqualMemo
 } from "react-js-utl/hooks";
 
 export default function HooksExample() {
@@ -74,6 +75,15 @@ export default function HooksExample() {
     memoObj2,
     "\nobj = ",
     obj
+  );
+
+  const initialPOJO = { a: 1, b: 2 };
+  const initialPOJORef = useRef(initialPOJO);
+  const POJO = useShallowEqualMemo(initialPOJO);
+  // eslint-disable-next-line no-console
+  console.log(
+    `useShallowEqualMemo - POJO === initialPOJORef.current`,
+    POJO === initialPOJORef.current
   );
 
   return (

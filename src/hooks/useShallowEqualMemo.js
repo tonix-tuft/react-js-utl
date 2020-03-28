@@ -23,21 +23,32 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-export { default as usePrevious } from "./usePrevious";
-export { default as useUpdateEffect } from "./useUpdateEffect";
-export { default as useMountEffect } from "./useMountEffect";
-export { default as useUnmountEffect } from "./useUnmountEffect";
-export { default as usePOJOState } from "./usePOJOState";
-export { default as useForceUpdate } from "./useForceUpdate";
-export { default as useHOFCallback } from "./useHOFCallback";
-export { default as useFactory } from "./useFactory";
-export { default as useExtend } from "./useExtend";
-export { default as useLoopCallback } from "./useLoopCallback";
-export { default as useWindowRef } from "./useWindowRef";
-export { default as useElementSize } from "./useElementSize";
-export { default as useElementHeight } from "./useElementHeight";
-export { default as useElementWidth } from "./useElementWidth";
-export { default as useArray } from "./useArray";
-export { default as useUniqueKey } from "./useUniqueKey";
-export { default as useDefaultValue } from "./useDefaultValue";
-export { default as useShallowEqualMemo } from "./useShallowEqualMemo";
+import { useRef, useMemo } from "react";
+import { shallowEqual } from "js-utl";
+
+/**
+ * Hook to use the previous given POJO if the given POJO is shallowly equal to the previous one.
+ *
+ * @param {Object} POJO A POJO object.
+ * @return {Object} The given POJO object the very first time or the previous POJO if the given
+ *                  POJO is shallowly equal to the previous given POJO.
+ */
+export default function useShallowEqualMemo(POJO) {
+  const ref = useRef({
+    init: true,
+    POJO
+  });
+  const ret = useMemo(() => {
+    if (ref.current.init) {
+      ref.current.init = false;
+      return POJO;
+    }
+    if (shallowEqual(POJO, ref.current.POJO)) {
+      return ref.current.POJO;
+    } else {
+      ref.current.POJO = POJO;
+      return POJO;
+    }
+  }, [POJO]);
+  return ret;
+}
