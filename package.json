@@ -99,7 +99,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "js-utl": "^4.3.0"
+    "js-utl": "^4.3.1"
   },
   "files": [
     "dist",
