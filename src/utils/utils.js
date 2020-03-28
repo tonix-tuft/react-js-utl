@@ -47,7 +47,7 @@ export function classNames(componentClassName, ...classNames) {
 /**
  * Merges a component's class name.
  *
- * @deprecated since version 1.17.0 (will be removed in version 2.0.0, use "classNames()" instead)
+ * @deprecated since version 1.17.0 (will be removed in a next major version, use "classNames()" instead)
  *
  * @param {string} componentClassName Component's class name.
  * @param {Object} props Properties.
