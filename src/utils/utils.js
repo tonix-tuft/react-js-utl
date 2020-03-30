@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { trim, isArray, isUndefined } from "js-utl";
+import { trim, isArray, isUndefined, isEmpty } from "js-utl";
 
 /**
  * React JS utility functions.
@@ -205,7 +205,10 @@ export const refCallback = (ref, prop = void 0) => value =>
  *                   false otherwise.
  */
 export const isFnWithComponentName = fn =>
-  typeof fn === "function" && fn.name[0] === fn.name[0].toUpperCase();
+  typeof fn === "function" &&
+  ((!isEmpty(fn.name) && fn.name[0] === fn.name[0].toUpperCase()) ||
+    (!isEmpty(fn.displayName) &&
+      fn.displayName[0] === fn.displayName[0].toUpperCase()));
 
 /**
  * Tests if a value is a React builtin HOC (e.g. a component returned by "React.memo()").
