@@ -198,6 +198,21 @@ export const refCallback = (ref, prop = void 0) => value =>
   (ref.current = prop ? (value ? value[prop] : null) : value);
 
 /**
+ * Tests if the given value has a React component name property
+ * (either a "name" or a "displayName" string property with the first character
+ * being a capital letter).
+ *
+ * @param {*} fn A value.
+ * @return {boolean} True if the given value has a valid React component name,
+ *                   false otherwise.
+ */
+export const isWithReactComponentName = fn =>
+  fn &&
+  ((!isEmpty(fn.name) && fn.name[0] === fn.name[0].toUpperCase()) ||
+    (!isEmpty(fn.displayName) &&
+      fn.displayName[0] === fn.displayName[0].toUpperCase()));
+
+/**
  * Tests if the given value is a function with a valid React component name.
  *
  * @param {*} fn A value.
@@ -205,10 +220,7 @@ export const refCallback = (ref, prop = void 0) => value =>
  *                   false otherwise.
  */
 export const isFnWithComponentName = fn =>
-  typeof fn === "function" &&
-  ((!isEmpty(fn.name) && fn.name[0] === fn.name[0].toUpperCase()) ||
-    (!isEmpty(fn.displayName) &&
-      fn.displayName[0] === fn.displayName[0].toUpperCase()));
+  typeof fn === "function" && isWithReactComponentName(fn);
 
 /**
  * Tests if a value is a React builtin HOC (e.g. a component returned by "React.memo()").
@@ -220,17 +232,38 @@ export const isReactHOC = Component =>
   typeof Component === "object" && isReactComponent(Component.type);
 
 /**
+ * Private helper for composing behaviour.
+ *
+ * @private
+ */
+function withAncestorHasComponentName(fn) {
+  let ancestorHasComponentName = false;
+  return (Component, Parent = void 0) => {
+    ancestorHasComponentName =
+      ancestorHasComponentName || isWithReactComponentName(Parent);
+    return fn(Component, ancestorHasComponentName);
+  };
+}
+
+/**
  * Tests if the given value is a valid React functional component.
  *
  * @param {*} Component The value.
  * @return {boolean} True if the value is a React functional component, false otherwise.
  */
 export function isFunctionalComponent(Component) {
-  return (
-    (isFnWithComponentName(Component) &&
-      !(Component.prototype && Component.prototype.isReactComponent)) ||
-    (isReactHOC(Component) && isFunctionalComponent(Component.type))
+  const testComponent = withAncestorHasComponentName(
+    (Component, ancestorHasComponentName) =>
+      // prettier-ignore
+      (
+        !(Component.prototype && Component.prototype.isReactComponent) &&
+        (
+          isFnWithComponentName(Component) ||
+          (ancestorHasComponentName && typeof Component === "function"))
+      ) ||
+      (isReactHOC(Component) && testComponent(Component.type, Component))
   );
+  return testComponent(Component);
 }
 
 /**
@@ -240,14 +273,16 @@ export function isFunctionalComponent(Component) {
  * @return {boolean} True if the value is a React class component, false otherwise.
  */
 export function isClassComponent(Component) {
-  return (
-    !!(
-      isFnWithComponentName(Component) &&
-      Component.prototype &&
-      Component.prototype.isReactComponent
-    ) ||
-    (isReactHOC(Component) && isClassComponent(Component.type))
+  const testComponent = withAncestorHasComponentName(
+    (Component, ancestorHasComponentName) =>
+      !!(
+        Component.prototype &&
+        Component.prototype.isReactComponent &&
+        (ancestorHasComponentName || isFnWithComponentName(Component))
+      ) ||
+      (isReactHOC(Component) && isClassComponent(Component.type))
   );
+  return testComponent(Component);
 }
 
 /**

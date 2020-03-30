@@ -17,12 +17,20 @@ ReactMemoClass.displayName = `ReactMemo(${getDisplayName(ReactMemoClass)})`;
 const ReactMemoFn = React.memo(App);
 ReactMemoFn.displayName = `ReactMemo(${getDisplayName(ReactMemoFn)})`;
 
+const notAReactComponent = () => {};
+
 export default function App() {
   const [shouldUnmountHooksExample, setShouldUnmountHooksExample] = useState(
     false
   );
   const ref = useRef(null);
-  const testComponents = [App, ClassComponent, ReactMemoClass, ReactMemoFn];
+  const testComponents = [
+    App,
+    ClassComponent,
+    ReactMemoFn,
+    ReactMemoClass,
+    notAReactComponent
+  ];
   return (
     <div className="app">
       <div ref={refCallback(ref, "contentEditable")}>{getDisplayName(App)}</div>
