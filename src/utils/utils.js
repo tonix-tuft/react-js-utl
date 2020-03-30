@@ -23,7 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { trim, isArray, isUndefined, isEmpty } from "js-utl";
+import { trim, isArray, isUndefined, isEmpty, compose } from "js-utl";
 
 /**
  * React JS utility functions.
@@ -207,10 +207,12 @@ export const refCallback = (ref, prop = void 0) => value =>
  *                   false otherwise.
  */
 export const isWithReactComponentName = fn =>
-  fn &&
-  ((!isEmpty(fn.name) && fn.name[0] === fn.name[0].toUpperCase()) ||
-    (!isEmpty(fn.displayName) &&
-      fn.displayName[0] === fn.displayName[0].toUpperCase()));
+  !!(
+    fn &&
+    ((!isEmpty(fn.name) && fn.name[0] === fn.name[0].toUpperCase()) ||
+      (!isEmpty(fn.displayName) &&
+        fn.displayName[0] === fn.displayName[0].toUpperCase()))
+  );
 
 /**
  * Tests if the given value is a function with a valid React component name.
@@ -229,21 +231,48 @@ export const isFnWithComponentName = fn =>
  * @return {boolean} True if the given value is a React HOC.
  */
 export const isReactHOC = Component =>
-  typeof Component === "object" && isReactComponent(Component.type);
+  typeof Component === "object" &&
+  ((Object.prototype.hasOwnProperty.call(Component, "$$typeof") &&
+    [typeof Symbol(""), typeof ""].indexOf(typeof Component.$$typeof) > -1) ||
+    isWithReactComponentName(Component) ||
+    isReactComponent(Component.type));
 
 /**
- * Private helper for composing behaviour.
+ * Private helper for composing behaviour when testing possible React components.
  *
  * @private
  */
-function withAncestorHasComponentName(fn) {
+const withAncestorHasComponentName = () => {
   let ancestorHasComponentName = false;
-  return (Component, Parent = void 0) => {
+  return fn => ({ Component, Parent = void 0, ...props }) => {
     ancestorHasComponentName =
       ancestorHasComponentName || isWithReactComponentName(Parent);
-    return fn(Component, ancestorHasComponentName);
+    return fn({ ...props, Component, ancestorHasComponentName });
   };
-}
+};
+
+/**
+ * Private helper for composing behaviour when testing possible React components.
+ *
+ * @private
+ */
+const withAncestorIsBuiltinReactHOC = () => {
+  let ancestorIsBuiltinReactHOC = false;
+  return fn => ({ Component, Parent = void 0, ...props }) => {
+    ancestorIsBuiltinReactHOC = ancestorIsBuiltinReactHOC || isReactHOC(Parent);
+    return fn({ ...props, Component, ancestorIsBuiltinReactHOC });
+  };
+};
+
+/**
+ * Composed behaviours when testing ancestors.
+ *
+ * @private
+ *
+ * @param {(props: Object) => boolean} fn
+ */
+const withComposedAncestorTests = fn =>
+  compose(withAncestorIsBuiltinReactHOC(), withAncestorHasComponentName())(fn);
 
 /**
  * Tests if the given value is a valid React functional component.
@@ -252,18 +281,22 @@ function withAncestorHasComponentName(fn) {
  * @return {boolean} True if the value is a React functional component, false otherwise.
  */
 export function isFunctionalComponent(Component) {
-  const testComponent = withAncestorHasComponentName(
-    (Component, ancestorHasComponentName) =>
-      // prettier-ignore
-      (
+  const testComponent = withComposedAncestorTests(
+    ({ Component, ancestorHasComponentName, ancestorIsBuiltinReactHOC }) => {
+      if (
         !(Component.prototype && Component.prototype.isReactComponent) &&
-        (
-          isFnWithComponentName(Component) ||
-          (ancestorHasComponentName && typeof Component === "function"))
-      ) ||
-      (isReactHOC(Component) && testComponent(Component.type, Component))
+        (isFnWithComponentName(Component) ||
+          (typeof Component === "function" &&
+            (ancestorHasComponentName || ancestorIsBuiltinReactHOC)))
+      ) {
+        return true;
+      } else if (isReactHOC(Component)) {
+        return testComponent({ Component: Component.type, Parent: Component });
+      }
+      return false;
+    }
   );
-  return testComponent(Component);
+  return testComponent({ Component });
 }
 
 /**
@@ -273,16 +306,18 @@ export function isFunctionalComponent(Component) {
  * @return {boolean} True if the value is a React class component, false otherwise.
  */
 export function isClassComponent(Component) {
-  const testComponent = withAncestorHasComponentName(
-    (Component, ancestorHasComponentName) =>
+  const testComponent = withComposedAncestorTests(
+    ({ Component, ancestorHasComponentName, ancestorIsBuiltinReactHOC }) =>
       !!(
         Component.prototype &&
         Component.prototype.isReactComponent &&
-        (ancestorHasComponentName || isFnWithComponentName(Component))
+        (ancestorHasComponentName ||
+          ancestorIsBuiltinReactHOC ||
+          isFnWithComponentName(Component))
       ) ||
       (isReactHOC(Component) && isClassComponent(Component.type))
   );
-  return testComponent(Component);
+  return testComponent({ Component });
 }
 
 /**

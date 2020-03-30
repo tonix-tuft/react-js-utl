@@ -34,6 +34,7 @@ export {
   reactChildrenKeyChildTupleFlatMap,
   refCallback,
   isFnWithComponentName,
+  isWithReactComponentName,
   isFunctionalComponent,
   isClassComponent,
   isReactComponent,

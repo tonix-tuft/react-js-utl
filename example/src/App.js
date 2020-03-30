@@ -29,7 +29,8 @@ export default function App() {
     ClassComponent,
     ReactMemoFn,
     ReactMemoClass,
-    notAReactComponent
+    notAReactComponent,
+    React.memo(function() {})
   ];
   return (
     <div className="app">
