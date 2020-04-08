@@ -38,6 +38,9 @@ const uniqueKeyPrefix = "react-js-utl-ellViKYMFK-";
  * @return {string} A unique key.
  */
 export default function useUniqueKey(dep = void 0) {
-  const key = useMemo(() => uniqueId(uniqueKeyPrefix), [dep]);
+  const key = useMemo(
+    () => uniqueId(`${uniqueKeyPrefix}-${typeof dep === "string" ? dep : ""}`),
+    [dep]
+  );
   return key;
 }
