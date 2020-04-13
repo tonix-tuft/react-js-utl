@@ -41,3 +41,4 @@ export { default as useArray } from "./useArray";
 export { default as useUniqueKey } from "./useUniqueKey";
 export { default as useDefaultValue } from "./useDefaultValue";
 export { default as useShallowEqualMemo } from "./useShallowEqualMemo";
+export { default as useCallbackRef } from "./useCallbackRef";
