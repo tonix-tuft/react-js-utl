@@ -23,7 +23,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
+import useCallbackRef from "./useCallbackRef";
 
 /**
  * Hook to execute a callback on unmount.
@@ -32,6 +33,6 @@ import { useEffect, useRef } from "react";
  * @return {undefined}
  */
 export default function useUnmountEffect(fn) {
-  const fnRef = useRef(fn);
-  useEffect(() => fnRef.current, []);
+  const fnRef = useCallbackRef(fn);
+  useEffect(() => fnRef.current, [fnRef]);
 }
