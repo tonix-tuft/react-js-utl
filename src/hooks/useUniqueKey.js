@@ -24,7 +24,7 @@
  */
 
 import { useMemo } from "react";
-import { uniqueId } from "js-utl";
+import { uniqueId, trimRight } from "js-utl";
 
 /**
  * @type {string}
@@ -39,7 +39,13 @@ const uniqueKeyPrefix = "react-js-utl-ellViKYMFK-";
  */
 export default function useUniqueKey(dep = void 0) {
   const key = useMemo(
-    () => uniqueId(`${uniqueKeyPrefix}-${typeof dep === "string" ? dep : ""}`),
+    () =>
+      uniqueId(
+        `${trimRight(
+          `${uniqueKeyPrefix}${typeof dep === "string" ? dep : ""}-`,
+          "-"
+        )}-`
+      ),
     [dep]
   );
   return key;

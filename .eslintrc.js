@@ -2,19 +2,19 @@ module.exports = {
   parser: "babel-eslint",
   env: {
     browser: true,
-    es6: true
+    es6: true,
   },
   extends: ["eslint:recommended", "standard", "standard-react"],
   globals: {
     Atomics: "readonly",
-    SharedArrayBuffer: "readonly"
+    SharedArrayBuffer: "readonly",
   },
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 2018,
-    sourceType: "module"
+    sourceType: "module",
   },
   plugins: ["react", "react-hooks"],
   rules: {
@@ -29,7 +29,16 @@ module.exports = {
     "react/prop-types": 0,
     "react/jsx-uses-react": "error",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "comma-dangle": "off",
+    indent: [
+      "error",
+      2,
+      {
+        ignoredNodes: ["TemplateLiteral"],
+      },
+    ],
+    "template-curly-spacing": ["off"],
   },
-  overrides: []
+  overrides: [],
 };

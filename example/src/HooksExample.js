@@ -8,7 +8,8 @@ import {
   useHOFCallback,
   useFactory,
   useExtend,
-  useShallowEqualMemo
+  useShallowEqualMemo,
+  useUniqueKey,
 } from "react-js-utl/hooks";
 
 export default function HooksExample() {
@@ -30,10 +31,10 @@ export default function HooksExample() {
 
   const [POJOState, setPOJOState] = usePOJOState({
     a: 123,
-    b: 456
+    b: 456,
   });
 
-  const HOFCallback = useHOFCallback(key => key * count * 2, [count]);
+  const HOFCallback = useHOFCallback((key) => key * count * 2, [count]);
   const callback = HOFCallback(3);
   const callbackRef = useRef(callback);
   // eslint-disable-next-line no-console
@@ -59,7 +60,7 @@ export default function HooksExample() {
     memoObj1,
     1,
     memoObj2,
-    "Ignore as it is not a source"
+    "Ignore as it is not a source",
   ]);
   obj.a = "A value";
   obj.c.f = "Another string";
@@ -86,6 +87,10 @@ export default function HooksExample() {
     POJO === initialPOJORef.current
   );
 
+  const uniqueKey = useUniqueKey();
+  // eslint-disable-next-line no-console
+  console.log(`Unique key: ${uniqueKey}`);
+
   return (
     <div>
       <div>
@@ -102,8 +107,8 @@ export default function HooksExample() {
       <div>
         <button
           onClick={() => {
-            setPOJOState(prevState => ({
-              b: prevState.b * 2
+            setPOJOState((prevState) => ({
+              b: prevState.b * 2,
             }));
           }}
         >
