@@ -43,3 +43,4 @@ export { default as useDefaultValue } from "./useDefaultValue";
 export { default as useShallowEqualMemo } from "./useShallowEqualMemo";
 export { default as useCallbackRef } from "./useCallbackRef";
 export { default as useIsUpdate } from "./useIsUpdate";
+export { default as useCumulativeShallowDiff } from "./useCumulativeShallowDiff";
