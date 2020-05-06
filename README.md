@@ -2,14 +2,20 @@
 
 React JS utility functions and hooks.
 
-[![NPM](https://img.shields.io/npm/v/react-js-utl.svg)](https://www.npmjs.com/package/react-js-utl) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/react-js-utl.svg)](https://www.npmjs.com/package/react-js-utl)
 
-## Install
+## Installation
 
 ```bash
 npm install --save react-js-utl
 ```
 
+Install peer dependencies:
+
+```bash
+npm install --save react react-dom immutable-linked-ordered-map
+```
+
 ## License
 
-MIT © [tonix-tuft](https://github.com/tonix-tuft)
+MIT © [Anton Bagdatyev (Tonix)](https://github.com/tonix-tuft)
