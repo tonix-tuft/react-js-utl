@@ -98,7 +98,7 @@
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "js-utl": "^4.6.1",
+    "js-utl": "^4.7.0",
     "prop-types": "^15.7.2"
   },
   "files": [
