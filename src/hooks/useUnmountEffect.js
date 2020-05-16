@@ -34,5 +34,5 @@ import useCallbackRef from "./useCallbackRef";
  */
 export default function useUnmountEffect(fn) {
   const fnRef = useCallbackRef(fn);
-  useEffect(() => fnRef.current, [fnRef]);
+  useEffect(() => () => fnRef.current(), [fnRef]);
 }

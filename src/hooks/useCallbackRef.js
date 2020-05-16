@@ -44,7 +44,9 @@ import { useRef, useEffect } from "react";
  */
 export default function useCallbackRef(callback) {
   const callbackRef = useRef(callback);
-  useEffect(() => (callbackRef.current = callback), [callback]);
+  useEffect(() => {
+    callbackRef.current = callback;
+  }, [callback]);
 
   return callbackRef;
 }
