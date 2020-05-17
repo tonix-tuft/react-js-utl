@@ -26,7 +26,7 @@
 import { useRef, useMemo } from "react";
 import useIsUpdate from "./useIsUpdate";
 import {
-  isObject,
+  isPlainObject,
   shallowEqual,
   shallowObjectDiff,
   isObjectEmpty,
@@ -65,7 +65,7 @@ export default function useCumulativeShallowDiff(value) {
     if (!isUpdate) {
       return previousValue;
     }
-    if (isObject(previousValue) && isObject(value)) {
+    if (isPlainObject(previousValue) && isPlainObject(value)) {
       const previousDiff = valueDiffRef.current.diff;
       const diff = shallowObjectDiff(previousValue, value);
       const newDiff = diff.objB;

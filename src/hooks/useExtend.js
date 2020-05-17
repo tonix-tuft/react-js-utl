@@ -24,7 +24,7 @@
  */
 
 import { useMemo } from "react";
-import { extend, isObject } from "js-utl";
+import { extend, isPlainObject } from "js-utl";
 
 /**
  * Hook to extend an object with an array of source objects.
@@ -43,7 +43,7 @@ export default function useExtend(destination, deps) {
     deps
   );
 
-  const extendFn = () => extend(obj, ...deps.filter(isObject));
+  const extendFn = () => extend(obj, ...deps.filter(isPlainObject));
   const finalObj = useMemo(extendFn, deps);
   return finalObj;
 }
