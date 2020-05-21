@@ -31,7 +31,8 @@ import { partialShallowEqual } from "js-utl";
  * if the partial state update of the next state is not the same as the previous state
  * for the same keys.
  *
- * @param {Object} initialState The initial state, a POJO (Plain Old JavaScript Object).
+ * @param {Object|Function} initialState The initial state, either a POJO (Plain Old JavaScript Object)
+ *                                       or a function returning a POJO (lazy initial state).
  * @return {Array} A tuple of two values, current state POJO and callback to set state,
  *                 like the one returned by the "useState" hook.
  *
