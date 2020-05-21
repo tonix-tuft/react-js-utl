@@ -41,19 +41,23 @@ import { useCallback, useRef } from "react";
 export default function useHOFCallback(fn, deps) {
   const callback = useCallback(fn, deps);
   const ref = useRef({ map: new Map(), callback });
-  const current = ref.current;
 
-  if (callback !== current.callback) {
-    current.map.clear();
-    current.callback = callback;
+  if (callback !== ref.current.callback) {
+    ref.current.map.clear();
+    ref.current.callback = callback;
   }
 
-  return key => {
-    let memoizedFn = current.map.get(key);
-    if (!memoizedFn) {
-      memoizedFn = (...args) => callback(key, ...args);
-      current.map.set(key, memoizedFn);
-    }
-    return memoizedFn;
-  };
+  const HOFCallback = useCallback(
+    key => {
+      let memoizedFn = ref.current.map.get(key);
+      if (!memoizedFn) {
+        memoizedFn = (...args) => callback(key, ...args);
+        ref.current.map.set(key, memoizedFn);
+      }
+      return memoizedFn;
+    },
+    [callback]
+  );
+
+  return HOFCallback;
 }
