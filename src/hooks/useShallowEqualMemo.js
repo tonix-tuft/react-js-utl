@@ -27,28 +27,29 @@ import { useRef, useMemo } from "react";
 import { shallowEqual } from "js-utl";
 
 /**
- * Hook to use the previous given POJO if the given POJO is shallowly equal to the previous one.
+ * Hook to use the previous given value if the currently given value is shallowly equal to the previous one.
  *
- * @param {Object} POJO A POJO object.
- * @return {Object} The given POJO object the very first time or the previous POJO if the given
- *                  POJO is shallowly equal to the previous given POJO.
+ * @param {*} value A value.
+ * @return {*} The given value the very first time or the previous value if the given
+ *             value is shallowly equal to the previous given value.
  */
-export default function useShallowEqualMemo(POJO) {
+export default function useShallowEqualMemo(value) {
   const ref = useRef({
     init: true,
-    POJO
+    value,
   });
   const ret = useMemo(() => {
     if (ref.current.init) {
       ref.current.init = false;
-      return POJO;
+      ref.current.value = value;
+      return value;
     }
-    if (shallowEqual(POJO, ref.current.POJO)) {
-      return ref.current.POJO;
+    if (shallowEqual(value, ref.current.value)) {
+      return ref.current.value;
     } else {
-      ref.current.POJO = POJO;
-      return POJO;
+      ref.current.value = value;
+      return value;
     }
-  }, [POJO]);
+  }, [value]);
   return ret;
 }
