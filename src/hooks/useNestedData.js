@@ -23,26 +23,25 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import useFactory from "./useFactory";
-import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
+import useNestedDataCallback from "./useNestedDataCallback";
+import { useMemo } from "react";
 
 /**
- * Hook returning an array for a given a data structure.
+ * Hook to traverse nested data.
  *
- * @param {Array|ImmutableLinkedOrderedMap} dataStructure A data structure.
- * @return {Array} An array containing the values of the data structure.
- *                 If an array is given as the data structure, the same array will be returned by this hook.
+ * @param {Array|Object|Map|WeakMap|ImmutableLinkedOrderedMap} data The data. Can be any of the specified types which in turn have nested data
+ *                                                                  of any of the specified types.
+ * @param {Array} keys An array of keys. Note that the array is flattened (only its first dimension) and therefore the following arrays
+ *                     will be treated as being the same array of keys:
+ *
+ *                         useNestedDataCallback(data, ["a", "b", "c", "d", "e"]);
+ *                         useNestedDataCallback(data, ["a", "b", ["c", "d"], "e"]); // Same as above.
+ *
+ *                     Each element represents a nested key of the given data.
+ * @return {*} The nested data.
  */
-export default function useArray(dataStructure) {
-  const arrayFactoryFn = useFactory(
-    () => [
-      [
-        ImmutableLinkedOrderedMap.isMap(dataStructure),
-        () => dataStructure.values(),
-      ],
-      () => dataStructure,
-    ],
-    [dataStructure]
-  );
-  return arrayFactoryFn();
+export default function useNestedData(data, keys) {
+  const callback = useNestedDataCallback(data);
+  const nestedData = useMemo(() => callback(keys), [callback, keys]);
+  return nestedData;
 }

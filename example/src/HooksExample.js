@@ -10,7 +10,9 @@ import {
   useExtend,
   useShallowEqualMemo,
   useUniqueKey,
+  useNestedData,
 } from "react-js-utl/hooks";
+import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
 
 export default function HooksExample() {
   const [count, setCount] = useState(0);
@@ -34,7 +36,7 @@ export default function HooksExample() {
     b: 456,
   });
 
-  const HOFCallback = useHOFCallback((key) => key * count * 2, [count]);
+  const HOFCallback = useHOFCallback(key => key * count * 2, [count]);
   const callback = HOFCallback(3);
   const callbackRef = useRef(callback);
   // eslint-disable-next-line no-console
@@ -91,6 +93,54 @@ export default function HooksExample() {
   // eslint-disable-next-line no-console
   console.log(`Unique key: ${uniqueKey}`);
 
+  const weakMapKey1Ref = useRef({});
+  const weakMapKey2Ref = useRef([]);
+  const objKey = {};
+  const map = new Map();
+  const nestedMap = new Map();
+  const nestedNestedMap = new Map();
+  const weakMap = new WeakMap();
+  const nestedWeakMap = new WeakMap();
+  nestedWeakMap.set(weakMapKey2Ref.current, {
+    linkedOrderedMap: new ImmutableLinkedOrderedMap({
+      initialItems: [
+        {
+          immutableLinkedOrderedMapKey1: {
+            prop1: new ImmutableLinkedOrderedMap({
+              initialItems: [{ id: "prop2", value: "Hello world!!!" }],
+            }),
+          },
+        },
+      ],
+    }),
+  });
+  weakMap.set(weakMapKey1Ref.current, { nestedWeakMap });
+  nestedNestedMap.set("nested_nested_map", {
+    d: { e: [0, { f: { g: { weakMap } } }] },
+  });
+  nestedMap.set(objKey, nestedNestedMap);
+  map.set("map_a", nestedMap);
+  const data = { a: { b: { c: map } }, h: 123, i: { l: [1, 2, 3] } };
+  const value = useNestedData(data, [
+    "a",
+    ["b"],
+    ["c", "map_a"],
+    [objKey, "nested_nested_map"],
+    "d",
+    "e",
+    1,
+    "f",
+    "g",
+    "weakMap",
+    [weakMapKey1Ref.current],
+    ["nestedWeakMap", weakMapKey2Ref.current, "linkedOrderedMap"],
+    ["immutableLinkedOrderedMapKey1"],
+    "prop1",
+    ["prop2", "value"],
+  ]);
+  // eslint-disable-next-line no-console
+  console.log("useNestedData value", value);
+
   return (
     <div>
       <div>
@@ -107,7 +157,7 @@ export default function HooksExample() {
       <div>
         <button
           onClick={() => {
-            setPOJOState((prevState) => ({
+            setPOJOState(prevState => ({
               b: prevState.b * 2,
             }));
           }}

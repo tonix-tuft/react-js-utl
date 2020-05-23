@@ -38,10 +38,10 @@ export default function useLoopCallback(dataStructure) {
   const loopCallback = useFactory(
     () => [
       [
-        dataStructure instanceof ImmutableLinkedOrderedMap,
-        fn => dataStructure.map(fn)
+        ImmutableLinkedOrderedMap.isMap(dataStructure),
+        fn => dataStructure.map(fn),
       ],
-      fn => dataStructure.map(fn)
+      fn => dataStructure.map(fn),
     ],
     [dataStructure]
   );
