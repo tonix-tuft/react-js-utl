@@ -101,16 +101,10 @@ export default function useNestedDataCallback(data) {
           break;
         }
         const traverseFactory = declarativeFactory([
-          [currentData instanceof Map, mapTraverseFactory],
-          [currentData instanceof WeakMap, weakMapTraverseFactory],
+          [() => currentData instanceof Map, mapTraverseFactory],
+          [() => currentData instanceof WeakMap, weakMapTraverseFactory],
           [
-            () => {
-              if (ImmutableLinkedOrderedMap.isMap(currentData)) {
-                return true;
-              } else {
-                return false;
-              }
-            },
+            () => ImmutableLinkedOrderedMap.isMap(currentData),
             immutableLinkedOrderedMapTraverseFactory,
           ],
           propTraverseFactory,
