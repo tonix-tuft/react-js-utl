@@ -29,6 +29,8 @@ import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
 import useFactory from "./useFactory";
 import usePrevious from "./usePrevious";
 import declarativeFactory from "declarative-factory";
+import visitor from "../primitives/visitor";
+import isPrimitiveOfType from "../primitives/predicates/isPrimitiveOfType";
 
 const dataGetKey = (data, key) => data.get(key);
 
@@ -61,6 +63,22 @@ const propTraverseFactory = {
 };
 
 /**
+ * @type {Object}
+ */
+const yesVisitorKeyFactory = visitor => ({
+  key: () => visitor.key,
+  visit: (...args) => visitor.visit(...args),
+});
+
+/**
+ * @type {Object}
+ */
+const noVisitorKeyFactory = finalKey => ({
+  key: () => finalKey,
+  visit: () => {},
+});
+
+/**
  * Hook returning a callback to traverse nested data.
  *
  * @param {Array|Object|Map|WeakMap|ImmutableLinkedOrderedMap} data The data. Can be any of the specified types which in turn have nested data
@@ -69,10 +87,41 @@ const propTraverseFactory = {
  *                              The nested data callback takes an array of keys as argument. Note that the array is flattened (only its first dimension)
  *                              and therefore the following arrays will be treated as being the same array of keys:
  *
- *                                  useNestedDataCallback(data, ["a", "b", "c", "d", "e"]);
- *                                  useNestedDataCallback(data, ["a", "b", ["c", "d"], "e"]); // Same as above.
+ *                                  import { useNestedDataCallback } from "react-js-utl/hooks";
+ *
+ *                                  // Inside functional component:
+ *                                  useNestedDataCallback(data)(["a", "b", "c", "d", "e"]);
+ *                                  useNestedDataCallback(data)(["a", "b", ["c", "d"], "e"]); // Same as above.
  *
  *                              Each element represents a nested key of the given data.
+ *
+ *                              An element can also be a visitor primitive returned by the "visitor" primitive function:
+ *
+ *                                  import { useNestedDataCallback } from "react-js-utl/hooks";
+ *                                  import { visitor } from "react-js-utl/primitives";
+ *
+ *                                  // Inside functional component:
+ *                                  useNestedDataCallback(data)([
+ *                                      "a",
+ *                                      visitor("b", ({
+ *                                          currentData,
+ *                                          depth,
+ *                                          key,
+ *                                          path,
+ *                                          pathData,
+ *                                          data,
+ *                                      }) => {
+ *                                          // Called when visiting the nested data ("currentData") for the "b" key (depth 1)
+ *                                          // if the data for the "b" key is not "undefined".
+ *                                      }),
+ *                                      "c",
+ *                                      "d",
+ *                                      "e"
+ *                                  ]);
+ *
+ *                              The visitor function allows to perform a custom behaviour when visiting the nested data.
+ *                              Note that the visitor function will only be called if the underlying visited data for a given nested key
+ *                              is not "undefined".
  */
 export default function useNestedDataCallback(data) {
   const prevData = usePrevious(data);
@@ -94,8 +143,10 @@ export default function useNestedDataCallback(data) {
     keys => {
       const data = finalData;
       const effectiveKeys = keys.flat();
-      let consumedKeysCount = 0;
+      let depth = 0;
       let currentData = data;
+      let path = [];
+      let pathData = [];
       for (const key of effectiveKeys) {
         if (!currentData) {
           break;
@@ -109,10 +160,27 @@ export default function useNestedDataCallback(data) {
           ],
           propTraverseFactory,
         ]);
-        currentData = traverseFactory.traverse(currentData, key);
-        consumedKeysCount++;
+        const visitorFactory = declarativeFactory([
+          [() => isPrimitiveOfType(key, visitor), yesVisitorKeyFactory(key)],
+          noVisitorKeyFactory(key),
+        ]);
+        const finalKey = visitorFactory.key();
+        currentData = traverseFactory.traverse(currentData, finalKey);
+        path = path.concat(finalKey);
+        pathData = pathData.concat(currentData);
+        if (typeof currentData !== "undefined") {
+          visitorFactory.visit({
+            currentData,
+            depth,
+            key: finalKey,
+            path,
+            pathData,
+            data,
+          });
+        }
+        depth++;
       }
-      return consumedKeysCount === effectiveKeys.length ? currentData : void 0;
+      return depth === effectiveKeys.length ? currentData : void 0;
     },
     [finalData]
   );

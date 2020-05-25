@@ -23,12 +23,20 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import * as utils from "./utils";
-import * as hooks from "./hooks";
-import * as primitives from "./primitives";
+import { primitiveProp } from "../primitive";
 
-export default {
-  utils,
-  hooks,
-  primitives,
-};
+/**
+ * Tests if the given value is a primitive of the given primitive type.
+ *
+ * @param {*} possiblePrimitive The given value.
+ * @param {Function} primitiveType The given primitive type.
+ * @return {boolean} True if the given value is a primitive of the given primitive type.
+ */
+export default function isPrimitiveOfType(possiblePrimitive, primitiveType) {
+  const primitiveKey = primitiveType[primitiveProp];
+  return !!(
+    possiblePrimitive &&
+    possiblePrimitive[primitiveProp] &&
+    possiblePrimitive[primitiveProp][primitiveKey]
+  );
+}

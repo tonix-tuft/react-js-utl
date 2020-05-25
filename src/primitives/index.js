@@ -23,12 +23,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import * as utils from "./utils";
-import * as hooks from "./hooks";
-import * as primitives from "./primitives";
+import { _ as curry_ } from "js-utl";
 
-export default {
-  utils,
-  hooks,
-  primitives,
-};
+export { default as visitor } from "./visitor";
+export { curry_ as _ };

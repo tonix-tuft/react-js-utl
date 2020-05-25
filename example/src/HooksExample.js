@@ -12,6 +12,7 @@ import {
   useUniqueKey,
   useNestedData,
 } from "react-js-utl/hooks";
+import { visitor } from "react-js-utl/primitives";
 import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
 
 export default function HooksExample() {
@@ -140,6 +141,26 @@ export default function HooksExample() {
   ]);
   // eslint-disable-next-line no-console
   console.log("useNestedData value", value);
+
+  const nestedDataValue = useNestedData({ a: { b: { c: { d: 123 } } } }, [
+    "a",
+    visitor("b")(({ currentData, depth, key, path, pathData, data }) =>
+      // eslint-disable-next-line no-console
+      console.log(
+        'Visiting "b" key: ',
+        currentData,
+        depth,
+        key,
+        path,
+        pathData,
+        data
+      )
+    ),
+    "c",
+    "d",
+  ]);
+  // eslint-disable-next-line no-console
+  console.log("useNestedData value", nestedDataValue);
 
   return (
     <div>

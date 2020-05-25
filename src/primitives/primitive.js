@@ -23,12 +23,21 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import * as utils from "./utils";
-import * as hooks from "./hooks";
-import * as primitives from "./primitives";
+/**
+ * @type {string}
+ */
+export const primitiveProp = "react-js-utl-primitive-rFOxpeMOVTDJMxE";
 
-export default {
-  utils,
-  hooks,
-  primitives,
-};
+/**
+ * Marks a function as a react-js-utl primitive.
+ *
+ * @param {Function} primitive A function to mark as a primitive.
+ * @param {string} primitiveKey A unique key identifying the primitive.
+ * @return {undefined}
+ */
+export default function primitive(primitive, primitiveKey) {
+  primitive[primitiveProp] = {
+    ...(primitive[primitiveProp] || {}),
+    [primitiveKey]: true,
+  };
+}

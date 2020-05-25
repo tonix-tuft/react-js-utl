@@ -23,12 +23,29 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import * as utils from "./utils";
-import * as hooks from "./hooks";
-import * as primitives from "./primitives";
+import { curry } from "js-utl";
+import primitive, { primitiveProp } from "./primitive";
 
-export default {
-  utils,
-  hooks,
-  primitives,
-};
+/**
+ * @type {string}
+ */
+const primitiveKey = "visitor-GanIjeOSkQd2ZgV";
+
+/**
+ * Visitor primitive.
+ *
+ * @param {*} key The key to visit.
+ * @param {Function} visit The visitor's function to execute when visiting some data at the given key.
+ */
+function visitor(key, visit) {
+  const visitor = {
+    key,
+    visit: (...args) => visit(...args),
+  };
+  primitive(visitor, primitiveKey);
+  return visitor;
+}
+
+const curriedVisitor = curry(visitor);
+curriedVisitor[primitiveProp] = primitiveKey;
+export default curriedVisitor;

@@ -31,13 +31,8 @@ import { useMemo } from "react";
  *
  * @param {Array|Object|Map|WeakMap|ImmutableLinkedOrderedMap} data The data. Can be any of the specified types which in turn have nested data
  *                                                                  of any of the specified types.
- * @param {Array} keys An array of keys. Note that the array is flattened (only its first dimension) and therefore the following arrays
- *                     will be treated as being the same array of keys:
- *
- *                         useNestedDataCallback(data, ["a", "b", "c", "d", "e"]);
- *                         useNestedDataCallback(data, ["a", "b", ["c", "d"], "e"]); // Same as above.
- *
- *                     Each element represents a nested key of the given data.
+ * @param {Array} keys An array of keys which will be passed to the underlying callback returned by the "useNestedDataCallback" hook used by "useNestedData".
+ *                     See the "useNestedDataCallback" hook for information about the shape of the keys array.
  * @return {*} The nested data.
  */
 export default function useNestedData(data, keys) {

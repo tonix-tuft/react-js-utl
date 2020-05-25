@@ -26,3 +26,5 @@ hooks/
 !src/hooks/
 utils/
 !src/utils/
+primitives/
+!src/primitives/
