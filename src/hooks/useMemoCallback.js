@@ -40,7 +40,7 @@ export default function useMemoCallback(callback) {
   }, [callback]);
   const memoCallback = useCallback(
     (...args) => {
-      callbackRef.current(...args);
+      return callbackRef.current(...args);
     },
     [callbackRef]
   );
