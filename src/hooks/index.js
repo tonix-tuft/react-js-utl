@@ -46,3 +46,4 @@ export { default as useIsUpdate } from "./useIsUpdate";
 export { default as useCumulativeShallowDiff } from "./useCumulativeShallowDiff";
 export { default as useNestedDataCallback } from "./useNestedDataCallback";
 export { default as useNestedData } from "./useNestedData";
+export { default as useMemoCallback } from "./useMemoCallback";
