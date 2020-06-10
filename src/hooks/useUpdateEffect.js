@@ -24,21 +24,54 @@
  */
 
 import { useRef, useEffect } from "react";
+import { isArray } from "js-utl";
 
 /**
  * Hook to execute a callback each time a component updates
  * (not when it mounts on the initial render).
  *
  * @param {Function} fn The callback to execute.
+ * @param {Array|undefined} [deps] Dependencies array to use.
  * @return {undefined}
  */
-export default function useUpdateEffect(fn) {
+export default function useUpdateEffect(fn, deps = void 0) {
   const isInitialRenderRef = useRef(true);
+  if (isArray(deps)) {
+    // This is needed so that the update effect is triggered on the first update
+    // even if the deps array didn't change.
+    if (deps.length) {
+      if (isInitialRenderRef.current) {
+        deps = [...deps];
+        let shouldBreak = false;
+        while (true) {
+          const rand = Math.random();
+          for (let i = 0; i < deps.length; i++) {
+            const value = deps[i];
+            if (rand !== value) {
+              shouldBreak = true;
+              break;
+            }
+            deps[i] = rand + 1;
+          }
+          if (shouldBreak) {
+            break;
+          }
+        }
+      }
+    } else {
+      if (isInitialRenderRef.current) {
+        deps = [0];
+      } else {
+        deps = [1];
+      }
+    }
+  }
   useEffect(() => {
     if (isInitialRenderRef.current) {
       isInitialRenderRef.current = false;
       return;
     }
-    fn();
-  });
+    return fn();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, deps);
 }

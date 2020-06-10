@@ -26,6 +26,12 @@ export default function HooksExample() {
 
   // eslint-disable-next-line no-console
   useUpdateEffect(() => console.log("componentDidUpdate"));
+  const dep = count % 3 < 1 ? 0 : 1;
+  console.log(dep);
+  // eslint-disable-next-line no-console
+  useUpdateEffect(() => console.log("componentDidUpdate with deps"), [1, dep]);
+  // eslint-disable-next-line no-console
+  useUpdateEffect(() => console.log("componentDidUpdate with empty deps"), []);
 
   // eslint-disable-next-line no-console
   useUnmountEffect(() => console.log("componentWillUnmount"));
