@@ -11,6 +11,7 @@ import {
   useShallowEqualMemo,
   useUniqueKey,
   useNestedData,
+  useIsOnline,
 } from "react-js-utl/hooks";
 import { visitor } from "react-js-utl/primitives";
 import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
@@ -26,8 +27,8 @@ export default function HooksExample() {
 
   // eslint-disable-next-line no-console
   useUpdateEffect(() => console.log("componentDidUpdate"));
+
   const dep = count % 3 < 1 ? 0 : 1;
-  console.log(dep);
   // eslint-disable-next-line no-console
   useUpdateEffect(() => console.log("componentDidUpdate with deps"), [1, dep]);
   // eslint-disable-next-line no-console
@@ -167,6 +168,10 @@ export default function HooksExample() {
   ]);
   // eslint-disable-next-line no-console
   console.log("useNestedData value", nestedDataValue);
+
+  const isOnline = useIsOnline();
+  // eslint-disable-next-line no-console
+  console.log("isOnline", isOnline);
 
   return (
     <div>
