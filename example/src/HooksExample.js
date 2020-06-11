@@ -88,6 +88,14 @@ export default function HooksExample() {
     obj
   );
 
+  const objWithNestedArray = useExtend(
+    { a: 1, b: [2, { c: 3 }] },
+    [{ b: [999, { d: 4 }] }],
+    { extendArrays: true }
+  );
+  // eslint-disable-next-line no-console
+  console.log("useExtend - objWithNestedArray", objWithNestedArray);
+
   const initialPOJO = { a: 1, b: 2 };
   const initialPOJORef = useRef(initialPOJO);
   const POJO = useShallowEqualMemo(initialPOJO);

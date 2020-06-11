@@ -25,6 +25,7 @@
 
 import { useMemo } from "react";
 import { extend, isPlainObject } from "js-utl";
+import useShallowEqualMemo from "./useShallowEqualMemo";
 
 /**
  * Hook to extend an object with an array of source objects.
@@ -35,15 +36,20 @@ import { extend, isPlainObject } from "js-utl";
  *                     If the nth element of this array is an object, it will always be used as a source object
  *                     when extending the destination object "destination", as well as used as a dep.
  *                     If the nth element of this array is not an object, it will only be used as a dep.
+ * @param {Object} [extendOptions] The options for the extension.
+ *                                 See the "extend" function of the js-utl package (https://github.com/tonix-tuft/js-utl)
+ *                                 for the available options.
  * @return {Object} The extended destination object.
  */
-export default function useExtend(destination, deps) {
+export default function useExtend(destination, deps, extendOptions = {}) {
   const obj = useMemo(
     typeof destination === "function" ? destination : () => destination,
     deps
   );
 
-  const extendFn = () => extend(obj, ...deps.filter(isPlainObject));
-  const finalObj = useMemo(extendFn, deps);
+  extendOptions = useShallowEqualMemo(extendOptions);
+  const extendFn = () =>
+    extend(obj, ...deps.filter(isPlainObject), [extendOptions]);
+  const finalObj = useMemo(extendFn, [...deps, extendOptions]);
   return finalObj;
 }
