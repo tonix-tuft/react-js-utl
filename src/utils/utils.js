@@ -57,7 +57,7 @@ export function mergeClassNameProp(componentClassName, props) {
   const { className, ...remaining } = props;
   return {
     className: classNames(componentClassName, className),
-    ...remaining
+    ...remaining,
   };
 }
 
@@ -353,4 +353,19 @@ export function defaultVal(
   } else {
     return !defaultValue ? void 0 : defaultValue;
   }
+}
+
+/**
+ * Checks whether the given value is a controlled value or not.
+ * If the value is a controlled value, it can be used in a controlled component.abs
+ *
+ * @see https://stackoverflow.com/questions/37427508/react-changing-an-uncontrolled-input#answer-37427596
+ * @see https://github.com/facebook/react/blob/master/packages/react-dom/src/client/ReactDOMInput.js#L40
+ *
+ * @param {*} value The given value.
+ * @return {boolean} True if the given value is a controlled value, i.e. it can be used in a controlled component,
+ *                   false otherwise.
+ */
+export function isControlledValue(value) {
+  return value != null;
 }

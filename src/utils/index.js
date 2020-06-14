@@ -39,5 +39,6 @@ export {
   isClassComponent,
   isReactComponent,
   isReactHOC,
-  defaultVal
+  defaultVal,
+  isControlledValue,
 } from "./utils";
