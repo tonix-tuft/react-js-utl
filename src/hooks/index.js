@@ -48,3 +48,4 @@ export { default as useNestedDataCallback } from "./useNestedDataCallback";
 export { default as useNestedData } from "./useNestedData";
 export { default as useMemoCallback } from "./useMemoCallback";
 export { default as useIsOnline } from "./useIsOnline";
+export { default as useClientRect } from "./useClientRect";
