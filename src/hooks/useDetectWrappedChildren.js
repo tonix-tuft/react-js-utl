@@ -47,8 +47,8 @@ export default function useDetectWrappedChildren(ref) {
     wrapped: [],
   }));
   useLayoutEffect(() => {
-    if (ref.current && width !== prevWidth) {
-      const wrapped = detectWrapped(ref.current);
+    if (ref.current && ref.current.children && width !== prevWidth) {
+      const wrapped = detectWrapped(ref.current.children);
       setState({
         areWrapped: !isEmpty(wrapped),
         wrapped,
