@@ -26,6 +26,7 @@
 import { useLayoutEffect, useCallback } from "react";
 import useWindowRef from "./useWindowRef";
 import usePOJOState from "./usePOJOState";
+import useCumulativeShallowDiff from "./useCumulativeShallowDiff";
 import { pick } from "js-utl";
 
 /**
@@ -33,7 +34,7 @@ import { pick } from "js-utl";
  */
 const initialDimensions = {
   width: void 0,
-  height: void 0
+  height: void 0,
 };
 
 /**
@@ -44,7 +45,7 @@ const defaultDimensionProps = ["width", "height"];
 /**
  * Hook to get the dimensions of a DOM element.
  *
- * @param {string|Element} element A selector of a DOM element or a DOM element.
+ * @param {string|Element|Object} element A selector of a DOM element, a DOM element or a ref object.
  * @param {string[]} dimensionProps Array of dimension props to track.
  *                                  Defaults to ['width', 'height'], i.e. track both width and height.
  * @return {Array|Object} The return value of this hook can be destructured as an array as well as an object.
@@ -63,6 +64,8 @@ export default function useElementSize(
   element,
   dimensionProps = defaultDimensionProps
 ) {
+  dimensionProps = useCumulativeShallowDiff(dimensionProps);
+
   const [dimensions, setDimensions] = usePOJOState(() =>
     pick(...dimensionProps)(initialDimensions)
   );
@@ -71,7 +74,11 @@ export default function useElementSize(
 
   const forceSetDimensions = useCallback(() => {
     const finalElement =
-      typeof element === "string" ? document.querySelector(element) : element;
+      typeof element === "string"
+        ? document.querySelector(element)
+        : element.current
+        ? element.current
+        : element;
     if (finalElement) {
       const boundingClientRect = finalElement.getBoundingClientRect();
       const dimensions = pick(...dimensionProps)(boundingClientRect);
