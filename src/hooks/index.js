@@ -52,3 +52,4 @@ export { default as useClientRect } from "./useClientRect";
 export { default as useLazyRef } from "./useLazyRef";
 export { default as useSyncRefsCallback } from "./useSyncRefsCallback";
 export { default as useDetectWrappedChildren } from "./useDetectWrappedChildren";
+export { default as useHashFragmentChange } from "./useHashFragmentChange";
