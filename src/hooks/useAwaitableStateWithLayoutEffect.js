@@ -23,8 +23,23 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import * as utils from "./utils";
-import * as hooks from "./hooks";
-import * as primitives from "./primitives";
+import { useAwaitableState } from "./useAwaitableStateWithEffect";
+import useStateWithLayoutEffectCallback from "./useStateWithLayoutEffectCallback";
 
-export { utils, hooks, primitives };
+/**
+ * Hook to use a state with a `setState` function which can be awaited until the state change is performed
+ * and the underlying layout effect (`useLayoutEffect`) is executed.
+ *
+ * @param {*|Function} initialState The initial state or a lazy callback returning the initial state.
+ * @return {Array} A tuple of two values, current state and callback to set state,
+ *                 like the one returned by the "useState" hook.
+ *
+ *                 The callback to set state may be awaited until the state change is performed
+ *                 and the underlying layout effect (`useLayoutEffect`) is executed.
+ */
+export default function useAwaitableStateWithLayoutEffect(initialState) {
+  return useAwaitableState({
+    initialState,
+    useStateWithSetStateCallback: useStateWithLayoutEffectCallback,
+  });
+}

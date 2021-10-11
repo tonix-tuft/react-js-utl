@@ -12,6 +12,8 @@ import {
   useUniqueKey,
   useNestedData,
   useIsOnline,
+  useAwaitableState,
+  useAwaitablePOJOState,
 } from "react-js-utl/hooks";
 import { visitor } from "react-js-utl/primitives";
 import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
@@ -181,9 +183,20 @@ export default function HooksExample() {
   // eslint-disable-next-line no-console
   console.log("isOnline", isOnline);
 
+  const [awaitableCounter, setAwaitableCounter] = useAwaitableState(0);
+  const [awaitablePOJO, setAwaitablePOJO] = useAwaitablePOJOState({
+    a: 1,
+    b: 2,
+  });
+
+  const awaitablePOJOJSON = JSON.stringify(awaitablePOJO);
+
+  // eslint-disable-next-line no-console
+  console.log("useAwaitablePOJOState", { awaitablePOJO, awaitablePOJOJSON });
+
   return (
     <div>
-      <div>
+      <div className="section">
         <p>Counter: {count}</p>
         <button
           onClick={() => {
@@ -194,7 +207,7 @@ export default function HooksExample() {
         </button>
       </div>
 
-      <div>
+      <div className="section">
         <button
           onClick={() => {
             setPOJOState(prevState => ({
@@ -212,11 +225,42 @@ export default function HooksExample() {
         </div>
       </div>
 
-      <div>
+      <div className="section">
         <button onClick={forceUpdate}>Click to force update</button>
       </div>
 
-      <div>Factory value: {JSON.stringify(factoryValue)}</div>
+      <div className="section">
+        Factory value: {JSON.stringify(factoryValue)}
+      </div>
+
+      <div className="section">
+        <button
+          onClick={async () => {
+            const awaitableCounter = await setAwaitableCounter(
+              awaitableCounter => awaitableCounter + 1
+            );
+            // eslint-disable-next-line no-console
+            console.log("await", { awaitableCounter });
+          }}
+        >
+          Click to update awaitable counter: {awaitableCounter}
+        </button>
+      </div>
+
+      <div className="section">
+        <button
+          onClick={async () => {
+            const awaitablePOJO = await setAwaitablePOJO(awaitablePOJO => ({
+              a: awaitablePOJO.a + 1,
+              b: awaitablePOJO.b + 1,
+            }));
+            // eslint-disable-next-line no-console
+            console.log("await", { awaitablePOJO });
+          }}
+        >
+          Click to update awaitable POJO: {awaitablePOJOJSON}
+        </button>
+      </div>
     </div>
   );
 }

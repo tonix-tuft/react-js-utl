@@ -23,6 +23,9 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import useAwaitableStateWithEffect from "./useAwaitableStateWithEffect";
+import useAwaitablePOJOStateWithEffect from "./useAwaitablePOJOStateWithEffect";
+
 export { default as usePrevious } from "./usePrevious";
 export { default as useUpdateEffect } from "./useUpdateEffect";
 export { default as useMountEffect } from "./useMountEffect";
@@ -54,3 +57,11 @@ export { default as useSyncRefsCallback } from "./useSyncRefsCallback";
 export { default as useDetectWrappedChildren } from "./useDetectWrappedChildren";
 export { default as useHashFragmentChange } from "./useHashFragmentChange";
 export { default as usePOJOMemoState } from "./usePOJOMemoState";
+export { default as useStateWithEffectCallback } from "./useStateWithEffectCallback";
+export { default as useStateWithLayoutEffectCallback } from "./useStateWithLayoutEffectCallback";
+export { default as usePOJOStateWithEffectCallback } from "./usePOJOStateWithEffectCallback";
+export { default as usePOJOStateWithLayoutEffectCallback } from "./usePOJOStateWithLayoutEffectCallback";
+export { useAwaitableStateWithEffect as useAwaitableState };
+export { default as useAwaitableStateWithLayoutEffect } from "./useAwaitableStateWithLayoutEffect";
+export { useAwaitablePOJOStateWithEffect as useAwaitablePOJOState };
+export { default as useAwaitablePOJOStateWithLayoutEffect } from "./useAwaitablePOJOStateWithLayoutEffect";
