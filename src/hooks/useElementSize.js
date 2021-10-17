@@ -76,7 +76,7 @@ export default function useElementSize(
     const finalElement =
       typeof element === "string"
         ? document.querySelector(element)
-        : Object.prototype.hasOwnProperty.call("current", element)
+        : Object.prototype.hasOwnProperty.call(element, "current")
         ? element.current
         : element;
     if (finalElement) {
