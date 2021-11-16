@@ -243,8 +243,9 @@ export default function HooksExample() {
             console.log("await", { awaitableCounter });
           }}
         >
-          Click to update awaitable counter: {awaitableCounter}
-        </button>
+          Click to update awaitable counter
+        </button>{" "}
+        {`awaitableCounter = ${awaitableCounter}`}
       </div>
 
       <div className="section">
@@ -252,14 +253,15 @@ export default function HooksExample() {
           onClick={async () => {
             const awaitablePOJO = await setAwaitablePOJO(awaitablePOJO => ({
               a: awaitablePOJO.a + 1,
-              b: awaitablePOJO.b + 1,
+              // b: awaitablePOJO.b + 1,
             }));
             // eslint-disable-next-line no-console
             console.log("await", { awaitablePOJO });
           }}
         >
-          Click to update awaitable POJO: {awaitablePOJOJSON}
-        </button>
+          Click to update awaitable POJO
+        </button>{" "}
+        {`awaitablePOJO.a = ${awaitablePOJO.a}, awaitablePOJO.b = ${awaitablePOJO.b}`}
       </div>
     </div>
   );

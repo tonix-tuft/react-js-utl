@@ -25,19 +25,19 @@ export default function App() {
   );
   const ref = useRef(null);
   const testComponents = [
-    App,
-    ClassComponent,
-    ReactMemoFn,
-    ReactMemoClass,
-    notAReactComponent,
-    React.memo(function() {}),
+    ["App", App],
+    ["ClassComponent", ClassComponent],
+    ["ReactMemoFn", ReactMemoFn],
+    ["ReactMemoClass", ReactMemoClass],
+    ["notAReactComponent", notAReactComponent],
+    ["React.memo(function() {})", React.memo(function() {})],
   ];
   return (
     <div className="app">
       <div ref={refCallback(ref, "contentEditable")}>{getDisplayName(App)}</div>
       <div>
-        {testComponents.map(testComponent => (
-          <pre key={getDisplayName(testComponent)}>
+        {testComponents.map(([key, testComponent]) => (
+          <pre key={key}>
             {getDisplayName(testComponent)}:{" "}
             {JSON.stringify({
               isReactComponent: isReactComponent(testComponent),
