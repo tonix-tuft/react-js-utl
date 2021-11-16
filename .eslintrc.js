@@ -31,7 +31,13 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "comma-dangle": "off",
-    indent: "off",
+    indent: [
+      "error",
+      2,
+      {
+        ignoredNodes: ["TemplateLiteral"],
+      },
+    ],
     "template-curly-spacing": ["off"],
   },
   overrides: [],

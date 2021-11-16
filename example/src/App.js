@@ -5,7 +5,7 @@ import {
   isReactComponent,
   isClassComponent,
   isFunctionalComponent,
-  isReactHOC
+  isReactHOC,
 } from "react-js-utl/utils";
 import HooksExample from "./HooksExample";
 
@@ -30,7 +30,7 @@ export default function App() {
     ReactMemoFn,
     ReactMemoClass,
     notAReactComponent,
-    React.memo(function() {})
+    React.memo(function() {}),
   ];
   return (
     <div className="app">
@@ -43,7 +43,7 @@ export default function App() {
               isReactComponent: isReactComponent(testComponent),
               isClassComponent: isClassComponent(testComponent),
               isFunctionalComponent: isFunctionalComponent(testComponent),
-              isReactHOC: isReactHOC(testComponent)
+              isReactHOC: isReactHOC(testComponent),
             })}
           </pre>
         ))}
