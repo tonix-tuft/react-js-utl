@@ -26,6 +26,23 @@
 import { useEffect } from "react";
 import { useStateWithSetStateCallback } from "./useStateWithEffectCallback";
 import usePOJOState from "./usePOJOState";
+import { partialShallowEqual } from "js-utl";
+
+/**
+ * @type {Function}
+ */
+export const onStateUpdate = ({ prevState, newState }) => ({
+  ...prevState,
+  ...newState,
+});
+
+/**
+ * For POJO state, bails out if the new state is null or partially shallowly equal to the previous state.
+ *
+ * @type {Function}
+ */
+export const onHasBailedOut = ({ prevState, newState }) =>
+  newState === null || partialShallowEqual(prevState, newState);
 
 /**
  * Hook to use a POJO state with a `setState` function receiving a callback as its second parameter
@@ -46,5 +63,7 @@ export default function usePOJOStateWithEffectCallback(initialState) {
     initialState,
     useState: usePOJOState,
     useEffect,
+    onStateUpdate,
+    onHasBailedOut,
   });
 }

@@ -251,10 +251,24 @@ export default function HooksExample() {
       <div className="section">
         <button
           onClick={async () => {
-            const awaitablePOJO = await setAwaitablePOJO(awaitablePOJO => ({
-              a: awaitablePOJO.a + 1,
-              // b: awaitablePOJO.b + 1,
-            }));
+            const awaitablePOJO = await setAwaitablePOJO(awaitablePOJO => {
+              const a = awaitablePOJO.a;
+              const b = awaitablePOJO.b;
+              const update = {
+                a: a + 1,
+              };
+              if (a % 10 === 0) {
+                update.b = b + 1;
+              }
+
+              // Bail out
+              if (a >= 30) {
+                return null;
+                // return awaitablePOJO;
+              }
+
+              return update;
+            });
             // eslint-disable-next-line no-console
             console.log("await", { awaitablePOJO });
           }}

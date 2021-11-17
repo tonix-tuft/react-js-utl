@@ -25,8 +25,23 @@
 
 import { useEffect, useState, useRef, useCallback } from "react";
 import { randomString, isUndefined } from "js-utl";
+import LQueue from "linked-queue";
 import usePOJOState from "./usePOJOState";
 import useShallowEqualMemo from "./useShallowEqualMemo";
+import useLazyRef from "./useLazyRef";
+
+/**
+ * @type {Function}
+ */
+const defaultOnStateUpdate = ({ newState }) => newState;
+
+/**
+ * Return false by default, for non-POJO state, bail out only if the new state is the same as the previous state.
+ *
+ * @type {Function}
+ */
+const defaultOnHasBailedOut = ({ prevState, newState }) =>
+  newState === prevState;
 
 /**
  * Hook used internally for all hooks allowing to set state with a `setState` callback
@@ -34,7 +49,12 @@ import useShallowEqualMemo from "./useShallowEqualMemo";
  *
  * @type {Function}
  */
-export const useStateWithSetStateCallback = ({ initialState, useEffect }) => {
+export const useStateWithSetStateCallback = ({
+  initialState,
+  useEffect,
+  onStateUpdate = defaultOnStateUpdate,
+  onHasBailedOut = defaultOnHasBailedOut,
+}) => {
   const counterRef = useRef([]);
   const randomValueCallback = useCallback(() => {
     counterRef.current++;
@@ -50,41 +70,60 @@ export const useStateWithSetStateCallback = ({ initialState, useEffect }) => {
 
   const state = useShallowEqualMemo(derivedState.state);
 
-  const callbacksRef = useRef([]);
+  const callbacksQueueRef = useLazyRef(() => new LQueue());
 
   useEffect(() => {
-    const len = callbacksRef.current.length;
+    const len = callbacksQueueRef.current.length;
     for (let i = 0; i < len; i++) {
-      const callback = callbacksRef.current[0];
+      const callback = callbacksQueueRef.current.dequeue();
       callback(state);
-      callbacksRef.current.shift();
     }
-  }, [derivedState.rand, state]);
+  }, [derivedState.rand, state, callbacksQueueRef]);
 
   const setStateWithCallback = useCallback(
-    (newState, callback = void 0) => {
-      let stateUpdate = {};
-      const hasCallback = !isUndefined(callback);
-      if (hasCallback) {
-        callbacksRef.current.push(callback);
-        stateUpdate =
-          typeof newState === "function"
-            ? (derivedState, ...args) => ({
-                state: newState(derivedState.state, ...args),
-                rand: randomValueCallback(),
-              })
-            : { state: newState, rand: randomValueCallback() };
-      } else {
-        stateUpdate =
-          typeof newState === "function"
-            ? (derivedState, ...args) => ({
-                state: newState(derivedState.state, ...args),
-              })
-            : { state: newState };
-      }
+    (newStateUpdate, callback = void 0) => {
+      const stateUpdate = (derivedState, ...args) => {
+        let update = null;
+        const prevState = derivedState.state;
+
+        let newState;
+        if (typeof newStateUpdate === "function") {
+          newState = newStateUpdate(prevState, ...args);
+        } else {
+          newState = newStateUpdate;
+        }
+
+        const hasBailedOut = onHasBailedOut({ prevState, newState });
+        const hasCallback = !isUndefined(callback);
+        if (hasBailedOut) {
+          if (hasCallback) {
+            // State update has bailed out, but there is a "setState" callback to execute.
+            // Execute the callback right away with the previous state.
+            callback(prevState);
+          }
+        } else {
+          update = {
+            state: onStateUpdate({ prevState, newState }),
+          };
+          if (hasCallback) {
+            // There is a state update and a "setState" callback to execute.
+            // Enqueue the callback to execute it later with the updated state in the effect when the state has been updated.
+            callbacksQueueRef.current.enqueue(callback);
+            update.rand = randomValueCallback();
+          }
+        }
+
+        return update;
+      };
       return setDerivedState(stateUpdate);
     },
-    [setDerivedState, randomValueCallback]
+    [
+      setDerivedState,
+      randomValueCallback,
+      callbacksQueueRef,
+      onStateUpdate,
+      onHasBailedOut,
+    ]
   );
 
   return [state, setStateWithCallback];

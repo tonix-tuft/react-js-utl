@@ -26,6 +26,10 @@
 import { useLayoutEffect } from "react";
 import { useStateWithSetStateCallback } from "./useStateWithEffectCallback";
 import usePOJOState from "./usePOJOState";
+import {
+  onStateUpdate,
+  onHasBailedOut,
+} from "./usePOJOStateWithEffectCallback";
 
 /**
  * Hook to use a POJO state with a `setState` function receiving a callback as its second parameter
@@ -46,5 +50,7 @@ export default function usePOJOStateWithLayoutEffectCallback(initialState) {
     initialState,
     useState: usePOJOState,
     useEffect: useLayoutEffect,
+    onStateUpdate,
+    onHasBailedOut,
   });
 }
