@@ -96,7 +96,8 @@
     "rollup": "^2.58.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-postcss": "^4.0.1",
-    "typescript": "^4.4.3"
+    "typescript": "^4.4.3",
+    "follow-redirects": ">=1.14.7"
   },
   "dependencies": {
     "declarative-factory": "^1.12.0",
