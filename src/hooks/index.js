@@ -65,3 +65,8 @@ export { useAwaitableStateWithEffect as useAwaitableState };
 export { default as useAwaitableStateWithLayoutEffect } from "./useAwaitableStateWithLayoutEffect";
 export { useAwaitablePOJOStateWithEffect as useAwaitablePOJOState };
 export { default as useAwaitablePOJOStateWithLayoutEffect } from "./useAwaitablePOJOStateWithLayoutEffect";
+export {
+  default as useDetectScrollable,
+  useDetectVerticallyScrollable,
+  useDetectHorizontallyScrollable,
+} from "./useDetectScrollable";

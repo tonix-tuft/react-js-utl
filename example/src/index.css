@@ -11,3 +11,13 @@ body {
 .section {
   margin-bottom: 20px;
 }
+
+.scrollable {
+  height: 300px;
+  width: 300px;
+  overflow: auto;
+}
+
+.line-of-scrollable {
+  width: 500px;
+}

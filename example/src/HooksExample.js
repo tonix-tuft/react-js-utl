@@ -14,6 +14,9 @@ import {
   useIsOnline,
   useAwaitableState,
   useAwaitablePOJOState,
+  useDetectScrollable,
+  useDetectVerticallyScrollable,
+  useDetectHorizontallyScrollable,
 } from "react-js-utl/hooks";
 import { visitor } from "react-js-utl/primitives";
 import ImmutableLinkedOrderedMap from "immutable-linked-ordered-map";
@@ -194,6 +197,27 @@ export default function HooksExample() {
   // eslint-disable-next-line no-console
   console.log("useAwaitablePOJOState", { awaitablePOJO, awaitablePOJOJSON });
 
+  const maybeScrollableRef = useRef(null);
+  const {
+    isVerticallyScrollable,
+    isHorizontallyScrollable,
+  } = useDetectScrollable(maybeScrollableRef);
+  const isVerticallyScrollable2 = useDetectVerticallyScrollable(
+    maybeScrollableRef
+  );
+  const isHorizontallyScrollable2 = useDetectHorizontallyScrollable(
+    maybeScrollableRef
+  );
+
+  // eslint-disable-next-line no-console
+  console.log({
+    maybeScrollableRef,
+    isVerticallyScrollable,
+    isHorizontallyScrollable,
+    isVerticallyScrollable2,
+    isHorizontallyScrollable2,
+  });
+
   return (
     <div>
       <div className="section">
@@ -276,6 +300,140 @@ export default function HooksExample() {
           Click to update awaitable POJO
         </button>{" "}
         {`awaitablePOJO.a = ${awaitablePOJO.a}, awaitablePOJO.b = ${awaitablePOJO.b}`}
+      </div>
+
+      <div className="section">
+        <div ref={maybeScrollableRef} className="scrollable">
+          <div className="line-of-scrollable">
+            Text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+          <div className="line-of-scrollable">
+            text text text text text text text text text text text text
+          </div>
+        </div>
       </div>
     </div>
   );
