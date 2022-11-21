@@ -93,7 +93,7 @@
     "onchange": "^6.1.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.1",
     "rollup": "^2.58.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-postcss": "^4.0.1",
